@@ -1,35 +1,29 @@
 spring:
-  config:
-    import: optional:file:.env[.properties]
-  messages:
-    basename: messages
-    encoding: UTF-8
   application:
-    name: ride_service
+    name: ride-service
   data:
     mongodb:
-      uri: mongodb://localhost:${DB_HOST}/${DB_NAME}
-  liquibase:
-    enabled: true
-    change-log: db/changelog/changelog.xml
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      uri: ${SPRING_DATA_MONGODB_URI}
   kafka:
-    bootstrap-servers: ${BOOTSTRAP_SERVERS}
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
     consumer:
-      group-id: ride-status
+      group-id: ${KAFKA_CONSUMER}
   artemis:
     mode: native
-    user: admin
-    password: admin
-    broker-url: tcp://localhost:61616
+    user: ${ARTEMIS_USER}
+    password: ${ARTEMIS_PASSWORD}
+    broker-url: tcp://artemis:${ARTEMIS_PORT}
   cloud:
     openfeign:
       client:
         config:
           finance-service:
-            url: http://localhost:8084/api/v1/finance
+            url: ${SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_FINANCE_SERVICE_URL}
           passenger-service:
-            url: http://localhost:8081/api/v1/passengers
+            url: ${SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_PASSENGER_SERVICE_URL}
+  messages:
+    basename: messages
+    encoding: UTF-8
+
 server:
-  port: ${RIDE_SERVICE_PORT}
+  port: 8083

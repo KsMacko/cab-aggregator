@@ -2,25 +2,26 @@ spring:
   application:
     name: passenger-service
   datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/passenger_db?useSSL=false&serverTimezone=UTC
-    username: root
-    password: asdfhcjsjffh
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
     show-sql: true
-  messages:
-    basename: messages
-    encoding: UTF-8
   cloud:
     openfeign:
       client:
         config:
           driver-service:
-            url: http://localhost:8081/api/v1/rates
+            url: ${SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_DRIVER_SERVICE_URL}
           ride-service:
-            url: http://localhost:8083/api/v1/rides
+            url: ${SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_RIDE_SERVICE_URL}
+  messages:
+    basename: messages
+    encoding: UTF-8
+
 server:
-  port: 8081
+  port: ${SERVER_PORT:-8081}
