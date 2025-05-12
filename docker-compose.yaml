@@ -1,13 +1,14 @@
 services:
-  # =============== Базы данных ===============
+  # =============== База данных ===============
   mysql:
     image: mysql:latest
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${DRIVER_DATABASE}
     ports:
       - "3307:${DB_PORT}"
     volumes:
@@ -30,7 +31,7 @@ services:
     image: docker.io/bitnami/zookeeper:latest
     container_name: zookeeper
     ports:
-      - "2181:${ZOOKEEPER_PORT}"
+      - "${ZOOKEEPER_PORT}:2181"
     environment:
       BITNAMI_DEBUG: "false"
       ALLOW_ANONYMOUS_LOGIN: "yes"
@@ -72,69 +73,83 @@ services:
       context: ./driver-service
     container_name: driver-service
     ports:
-      - "8082:${DRIVER_SERVER_PORT}"
+      - "${DRIVER_SERVER_PORT}:${DRIVER_SERVER_PORT}"
     depends_on:
       - mysql
       - kafka
       - artemis
     env_file:
       - .env
+    volumes:
+      - ${LIQUIBASE_DRIVER_PATH}
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_FINANCE_SERVICE_URL: http://finance-service:8084/api/v1/finance
-      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_PASSENGER_SERVICE_URL: http://passenger-service:8081/api/v1/rates
-      SERVER_PORT: 8082
-
-  finance-service:
-    build:
-      context: ./finance-service
-    container_name: finance-service
-    ports:
-      - "8084:${FINANCE_SERVER_PORT}"
-    depends_on:
-      - mysql
-      - artemis
-    env_file:
-      - .env
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${FINANCE_DB_NAME}?useUnicode=true&characterEncoding=utf8
-      SPRING_ARTEMIS_BROKER_URL: tcp://artemis:61616
-      SERVER_PORT: 8084
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${DRIVER_DATABASE}?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: ${BOOTSTRAP_SERVERS}
+      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_DRIVER_SERVICE_URL: ${DRIVER_SERVICE_URL}
+      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_FINANCE_SERVICE_URL: ${FINANCE_SERVICE_URL}
+      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_PASSENGER_SERVICE_URL: ${PASSENGER_SERVICE_URL}
+      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_RIDE_SERVICE_URL: ${RIDE_SERVICE_URL}
+      SERVER_PORT: ${DRIVER_SERVER_PORT}
 
   passenger-service:
     build:
       context: ./passenger-service
     container_name: passenger-service
     ports:
-      - "8081:${PASSENGER_SERVER_PORT}"
+      - "${PASSENGER_SERVER_PORT}:${PASSENGER_SERVER_PORT}"
     depends_on:
       - mysql
     env_file:
       - .env
+    volumes:
+      - ${LIQUIBASE_PASSENGER_PATH}
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${PASSENGER_DB_NAME}?useSSL=false&serverTimezone=UTC
-      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_DRIVER_SERVICE_URL: http://driver-service:8082/api/v1/drivers
-      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_RIDE_SERVICE_URL: http://ride-service:8083/api/v1/rides
-      SERVER_PORT: 8081
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${PASSENGER_DATABASE}?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_DRIVER_SERVICE_URL: ${DRIVER_SERVICE_URL}
+      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_RIDE_SERVICE_URL: ${RIDE_SERVICE_URL}
+      SERVER_PORT: ${PASSENGER_SERVER_PORT}
+
+  finance-service:
+    build:
+      context: ./finance-service
+    container_name: finance-service
+    ports:
+      - "${FINANCE_SERVER_PORT}:${FINANCE_SERVER_PORT}"
+    depends_on:
+      - mysql
+      - artemis
+    env_file:
+      - .env
+    volumes:
+      - ${LIQUIBASE_FINANCE_PATH}
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${FINANCE_DATABASE}?useUnicode=true&characterEncoding=utf8
+      SPRING_ARTEMIS_BROKER_URL: tcp://artemis:61616
+      SERVER_PORT: ${FINANCE_SERVER_PORT}
 
   ride-service:
     build:
       context: ./ride-service
     container_name: ride-service
     ports:
-      - "8083:${RIDE_SERVER_PORT}"
+      - "${RIDE_SERVER_PORT}:${RIDE_SERVER_PORT}"
     depends_on:
       - mongodb
       - kafka
     env_file:
       - .env
+    volumes:
+      - ${LIQUIBASE_RIDE_PATH}
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: ${BOOTSTRAP_SERVERS}
-      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_FINANCE_SERVICE_URL: http://finance-service:8084/api/v1/finance
-      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_PASSENGER_SERVICE_URL: http://passenger-service:8081/api/v1/passengers
-      SERVER_PORT: 8083
+      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_FINANCE_SERVICE_URL: ${FINANCE_SERVICE_URL}
+      SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_PASSENGER_SERVICE_URL: ${PASSENGER_SERVICE_URL}
+      SERVER_PORT: ${RIDE_SERVER_PORT}
       SPRING_AUTOCONFIGURE_EXCLUDE: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 
 volumes:
