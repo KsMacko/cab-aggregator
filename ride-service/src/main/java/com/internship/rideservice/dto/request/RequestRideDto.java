@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ import static com.internship.rideservice.util.validators.ValidationConstants.MIN
 import static com.internship.rideservice.util.validators.ValidationConstants.MIN_DISTANCE;
 import static com.internship.rideservice.util.validators.ValidationConstants.PAYMENT_TYPE_PATTERN;
 
+@Builder
 public record RequestRideDto(
         @NotNull(message = "passenger.notNull")
         @PositiveOrZero(message = "id.positive")

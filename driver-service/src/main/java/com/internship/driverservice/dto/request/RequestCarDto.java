@@ -7,7 +7,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
+@Builder
 public record RequestCarDto (
     @PositiveOrZero(message = "id.positive")
     @Max(value = ValidationConstants.MAX_ID_VALUE, message = "driver.id.maxValue")

@@ -6,6 +6,7 @@ import com.internship.rideservice.util.validators.ValidateDate;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import static com.internship.rideservice.util.validators.ValidationConstants.PRO
 
 @Getter
 @Setter
+@Builder
 public class PromoCodeFilterRequest{
     @ValidateDate(message = "date.invalidInput")
     private String createdDate;

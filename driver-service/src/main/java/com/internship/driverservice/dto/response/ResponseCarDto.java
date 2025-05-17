@@ -1,5 +1,8 @@
 package com.internship.driverservice.dto.response;
 
+import lombok.Builder;
+
+@Builder
 public record ResponseCarDto(
         Long id,
         Long driverId,

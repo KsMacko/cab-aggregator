@@ -6,16 +6,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Builder;
 
 import static com.internship.passengerservice.utils.ValidationConstants.MAX_ID_VALUE;
 import static com.internship.passengerservice.utils.ValidationConstants.MAX_RATE;
 import static com.internship.passengerservice.utils.ValidationConstants.MIN_RATE;
 
+@Builder
 public record RequestRateDto(
         @Min(value = MIN_RATE, message = "rate.minValue")
         @Max(value = MAX_RATE, message = "rate.maxValue")
         @NotNull(message = "rate.notNull")
-        Byte value,
+        Integer value,
         @Positive(message = "id.positive")
         @Max(value = MAX_ID_VALUE, message = "profile.id.maxValue")
         Long authorId,

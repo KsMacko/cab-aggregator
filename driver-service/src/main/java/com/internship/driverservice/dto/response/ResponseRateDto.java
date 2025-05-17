@@ -1,10 +1,13 @@
 package com.internship.driverservice.dto.response;
 
+import lombok.Builder;
+
 import java.time.LocalDateTime;
 
+@Builder
 public record ResponseRateDto(
         Long id,
-        Byte value,
+        Integer value,
         Long authorId,
         Long recipientId,
         LocalDateTime createdAt,

@@ -1,6 +1,7 @@
 package com.internship.rideservice.entity;
 
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @FieldNameConstants
+@Builder
 public class PromoCode {
     @Id
     private String id;

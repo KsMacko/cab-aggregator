@@ -7,12 +7,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
 import static com.internship.rideservice.util.validators.ValidationConstants.ALPHANUMERIC_REGEX;
 import static com.internship.rideservice.util.validators.ValidationConstants.MAX_PROMO_CODE_DISCOUNT;
 import static com.internship.rideservice.util.validators.ValidationConstants.MAX_PROMO_CODE_LENGTH;
 import static com.internship.rideservice.util.validators.ValidationConstants.MIN_PROMO_CODE_DISCOUNT;
 
+@Builder
 public record RequestPromoCodeDto(
         @NotBlank(message = "code.notBlank")
         @Pattern(regexp = ALPHANUMERIC_REGEX, message = "promo.code.invalidInput")

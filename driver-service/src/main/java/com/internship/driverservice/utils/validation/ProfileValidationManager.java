@@ -3,6 +3,7 @@ package com.internship.driverservice.utils.validation;
 import com.internship.driverservice.entity.DriverProfile;
 import com.internship.driverservice.entity.Notification;
 import com.internship.driverservice.enums.notification.NotificationStatus;
+import com.internship.driverservice.enums.notification.NotificationType;
 import com.internship.driverservice.repo.DriverProfileRepo;
 import com.internship.driverservice.repo.NotificationRepo;
 import com.internship.driverservice.utils.exceptions.InvalidInputException;
@@ -42,7 +43,8 @@ public class ProfileValidationManager {
             throw new InvalidInputException(DRIVER_PHONE_UNIQUE.getCode());
     }
     public DriverProfile findDriverByAcceptedRide(String rideId) {
-        Notification notification = notificationRepo.findByRideIdAndStatus(rideId, NotificationStatus.ACCEPTED)
+        Notification notification = notificationRepo.findByRideIdAndStatusAndType(
+                rideId, NotificationStatus.ACCEPTED, NotificationType.RIDE_CREATION)
                 .orElseThrow(() -> new ResourceNotFoundException(DRIVER_FOR_RIDE_NOT_FOUND.getCode()));
         return notification.getDriverProfile();
     }

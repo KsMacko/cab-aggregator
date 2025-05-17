@@ -20,6 +20,11 @@ public interface NotificationMapper {
     @Mapping(target = "updatedAt", source = "notification.updatedAt")
     PaymentByCashConfirmationDto handleEntity(PaymentByCashConfirmation entity);
 
-    @InheritConfiguration
+    @Mapping(target = "rideId", source = "notification.rideId")
+    @Mapping(target = "type", source = "notification.type")
+    @Mapping(target = "status", source = "notification.status")
+    @Mapping(target = "activity", source = "notification.activity")
+    @Mapping(target = "createdAt", source = "notification.createdAt")
+    @Mapping(target = "updatedAt", source = "notification.updatedAt")
     RideCreatedNotificationDto handleEntity(RideCreationNotification entity);
 }

@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +26,7 @@ import static com.internship.passengerservice.utils.ValidationConstants.PROFILE_
 
 @Getter
 @Setter
+@Builder
 public class ProfileFilterRequest{
     @Pattern(regexp = EMAIL_PATTERN, message = "email.invalidInput")
     @Size(max = MAX_EMAIL_LENGTH, message = "email.invalidSize")

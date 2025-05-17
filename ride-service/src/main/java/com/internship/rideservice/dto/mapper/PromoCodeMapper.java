@@ -8,19 +8,20 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PromoCodeMapper {
 
-    DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+    DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
-    @Mapping(target = "validUntil", source = "validUntil")
+    @Mapping(target = "validUntil", source = "validUntil", qualifiedByName = "mapStringToLocalDateTime")
     PromoCode handleDto(RequestPromoCodeDto dto);
 
     @Mapping(target = "validUntil", source = "validUntil")
@@ -32,13 +33,10 @@ public interface PromoCodeMapper {
     @Mapping(target = "validUntil", source = "validUntil")
     void updateEntity(RequestPromoCodeDto dto, @MappingTarget PromoCode entity);
 
-    default String mapLocalDateToString(LocalDate value) {
-        return value != null ? value.format(FORMATTER) : null;
-    }
-
-    default LocalDate mapStringToLocalDate(String value) {
+    @Named("mapStringToLocalDateTime")
+    default LocalDateTime mapStringToLocalDateTime(String value) {
         try {
-            return value != null ? LocalDate.parse(value, FORMATTER) : null;
+            return value != null ? LocalDateTime.parse(value, FORMATTER) : null;
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid date format: " + value, e);
         }

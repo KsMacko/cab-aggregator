@@ -8,7 +8,6 @@ import org.mapstruct.Mapping
 import org.mapstruct.MappingConstants
 import org.mapstruct.Mappings
 
-
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 interface WalletTransferMapper {
     @Mappings(

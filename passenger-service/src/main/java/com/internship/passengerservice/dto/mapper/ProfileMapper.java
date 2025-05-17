@@ -29,5 +29,4 @@ public interface ProfileMapper{
     @Mapping(target = "rates", ignore = true)
     void updateEntity(RequestProfileDto dto, @MappingTarget PassengerProfile entity);
 
-
 }

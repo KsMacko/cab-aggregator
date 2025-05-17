@@ -24,7 +24,7 @@ class Card {
 
     @Enumerated(EnumType.STRING)
     lateinit var owner: OwnerType
-    val ownerId: Long = 0
+    var ownerId: Long = 0
 
     @Enumerated(EnumType.STRING)
     lateinit var cardType: CardType

@@ -3,6 +3,7 @@ package com.internship.rideservice.entity;
 import com.internship.rideservice.enums.FareType;
 import com.internship.rideservice.enums.PaymentType;
 import com.internship.rideservice.enums.RideStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
@@ -18,6 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @FieldNameConstants
+@Builder
 public class Ride {
     @Id
     private String id;

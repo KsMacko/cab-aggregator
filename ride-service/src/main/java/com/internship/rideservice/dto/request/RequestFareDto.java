@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 
@@ -17,6 +18,7 @@ import static com.internship.rideservice.util.validators.ValidationConstants.MAX
 import static com.internship.rideservice.util.validators.ValidationConstants.MAX_PRICE_PER_MINUTE;
 import static com.internship.rideservice.util.validators.ValidationConstants.MIN_PRICE;
 
+@Builder
 public record RequestFareDto(
         @Pattern(regexp = FARE_TYPE_PATTERN, message = "fare.type.invalidInput")
         String type,
