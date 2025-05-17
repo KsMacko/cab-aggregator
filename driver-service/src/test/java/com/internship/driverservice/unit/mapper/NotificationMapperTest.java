@@ -21,7 +21,7 @@ public class NotificationMapperTest {
     @DisplayName("handleEntity maps RideCreationNotification to RideCreatedNotificationDto")
     void handleRideCreationNotificationEntity() {
         RideCreationNotification entity = NotificationUtil.rideCreationNotification();
-        RideCreatedNotificationDto dto = mapper.handleRideCreationEntity(entity);
+        RideCreatedNotificationDto dto = mapper.handleEntity(entity);
 
         assertThat(dto).isNotNull();
         assertThat(dto.id()).isEqualTo(entity.getId());
@@ -39,7 +39,7 @@ public class NotificationMapperTest {
     @DisplayName("handleEntity maps PaymentByCashConfirmation to PaymentByCashConfirmationDto")
     void handlePaymentByCashConfirmationEntity() {
         PaymentByCashConfirmation entity = NotificationUtil.paymentByCashConfirmation();
-        PaymentByCashConfirmationDto dto = mapper.handlePaymentEntity(entity);
+        PaymentByCashConfirmationDto dto = mapper.handleEntity(entity);
 
         assertThat(dto).isNotNull();
         assertThat(dto.id()).isEqualTo(entity.getId());
