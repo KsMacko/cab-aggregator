@@ -9,7 +9,7 @@ public record ResponsePromoCodeDto(
         String promoCode,
         String id,
         Byte discount,
-        String validUntil,
+        LocalDateTime validUntil,
         LocalDateTime createdAt
 ) {
 }
