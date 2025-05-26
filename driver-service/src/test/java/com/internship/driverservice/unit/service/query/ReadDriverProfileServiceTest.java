@@ -11,7 +11,6 @@ import com.internship.driverservice.repo.RateRepo;
 import com.internship.driverservice.service.query.ReadDriverProfileService;
 import com.internship.driverservice.service.specification.DriverSpecificationService;
 import com.internship.driverservice.utils.validation.ProfileValidationManager;
-import com.internship.driverservice.util.ProfileUtil;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,14 +28,22 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-import static com.internship.driverservice.util.ProfileUtil.DEFAULT_PROFILE_ID;
-import static com.internship.driverservice.util.ProfileUtil.DEFAULT_RATE;
-import static com.internship.driverservice.util.ProfileUtil.DEFAULT_SORT_FIELD;
 import static com.internship.driverservice.util.ProfileUtil.driverFilterRequest;
 import static com.internship.driverservice.util.ProfileUtil.driverProfile;
 import static com.internship.driverservice.util.ProfileUtil.responseProfileDto;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_PAGE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_PAGE_SIZE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_RATE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_SORT_FIELD;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ReadDriverProfileService unit tests")
@@ -66,8 +73,8 @@ class ReadDriverProfileServiceTest {
         DriverFilterRequest emptyFilter = new DriverFilterRequest();
         Specification<DriverProfile> spec = mock(Specification.class);
         Pageable expectedPageable = PageRequest.of(
-                ProfileUtil.DEFAULT_PAGE,
-                ProfileUtil.DEFAULT_PAGE_SIZE,
+                DEFAULT_PAGE,
+                DEFAULT_PAGE_SIZE,
                 Sort.by(Sort.Direction.ASC, FieldFilter.valueOf(DEFAULT_SORT_FIELD).getFieldName())
         );
         Page<DriverProfile> resultPage = mockDriverPage(expectedPageable);
@@ -123,23 +130,21 @@ class ReadDriverProfileServiceTest {
     @Test
     @DisplayName("readDriverProfileById returns profile with rating")
     void readDriverProfileById_returnsProfileWithRating() {
-        Long id = DEFAULT_PROFILE_ID;
         DriverProfile driverProfile = driverProfile();
         ResponseProfileDto responseDto = responseProfileDto();
-        Integer rating = DEFAULT_RATE;
 
-        when(profileValidationManager.getDriverProfile(id)).thenReturn(driverProfile);
-        when(rateRepo.findDriverRatingByProfileId(id)).thenReturn(rating);
-        when(rateRepo.findDriverRatingByProfileId(id)).thenReturn(DEFAULT_RATE);
-        when(profileMapper.handleEntity(driverProfile, rating)).thenReturn(responseDto);
+        when(profileValidationManager.getDriverProfile(anyLong())).thenReturn(driverProfile);
+        when(rateRepo.findDriverRatingByProfileId(anyLong())).thenReturn(DEFAULT_RATE);
+        when(rateRepo.findDriverRatingByProfileId(anyLong())).thenReturn(DEFAULT_RATE);
+        when(profileMapper.handleEntity(any(DriverProfile.class), anyInt())).thenReturn(responseDto);
 
-        ResponseProfileDto result = readDriverProfileService.readDriverProfileById(id);
+        ResponseProfileDto result = readDriverProfileService.readDriverProfileById(DEFAULT_ID);
 
-        verify(profileValidationManager).getDriverProfile(id);
-        verify(rateRepo).findDriverRatingByProfileId(id);
+        verify(profileValidationManager).getDriverProfile(DEFAULT_ID);
+        verify(rateRepo).findDriverRatingByProfileId(DEFAULT_ID);
 
         assertThat(result).isNotNull();
-        assertThat(result.rate()).isEqualTo(rating);
+        assertThat(result.rate()).isEqualTo(DEFAULT_RATE);
         assertThat(result.firstName()).isEqualTo(driverProfile.getFirstName());
     }
 }

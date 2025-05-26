@@ -26,10 +26,10 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
-import static com.internship.driverservice.util.CarUtil.DEFAULT_DRIVER_ID;
-import static com.internship.driverservice.util.CarUtil.DEFAULT_PAGE;
-import static com.internship.driverservice.util.CarUtil.DEFAULT_PAGE_SIZE;
 import static com.internship.driverservice.util.CarUtil.carNotCurrentEntity;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_PAGE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_PAGE_SIZE;
 import static org.mockito.Mockito.eq;
 import static com.internship.driverservice.util.CarUtil.carEntity;
 import static com.internship.driverservice.util.CarUtil.createDriverProfile;
@@ -102,15 +102,18 @@ class ReadCarServiceTest {
 
         assertCarPackageDto(dto, resultPage);
     }
+
     private Page<Car> mockCarPage(Pageable pageable) {
         List<Car> cars = List.of(carEntity(), carNotCurrentEntity());
         return new PageImpl<>(cars, pageable, cars.size());
     }
+
     private void mockCommonDependencies(Specification<Car> spec, Page<Car> page) {
         when(carSpecification.createFilterSpecification(any(CarFilterRequest.class))).thenReturn(spec);
         when(carRepo.findAll(eq(spec), any(Pageable.class))).thenReturn(page);
         when(carMapper.handleEntity(any(Car.class))).thenReturn(responseCarDto());
     }
+
     private void assertCarPackageDto(CarPackageDto dto, Page<Car> page) {
         assertThat(dto).isNotNull();
         assertThat(dto.pageNumber()).isEqualTo(DEFAULT_PAGE);
@@ -125,10 +128,10 @@ class ReadCarServiceTest {
         DriverProfile driverProfile = createDriverProfile();
         Car currentCar = carEntity();
 
-        when(profileValidationManager.getDriverProfile(DEFAULT_DRIVER_ID)).thenReturn(driverProfile);
+        when(profileValidationManager.getDriverProfile(DEFAULT_ID)).thenReturn(driverProfile);
         when(carRepo.findByDriverProfileAndIsCurrent(driverProfile, true)).thenReturn(currentCar);
 
-        Car result = readCarService.getCurrentCarByProfileId(DEFAULT_DRIVER_ID);
+        Car result = readCarService.getCurrentCarByProfileId(DEFAULT_ID);
 
         assertThat(result).isEqualTo(currentCar);
         verify(carRepo).findByDriverProfileAndIsCurrent(driverProfile, true);

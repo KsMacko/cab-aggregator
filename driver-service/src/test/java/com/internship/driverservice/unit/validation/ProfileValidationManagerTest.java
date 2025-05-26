@@ -18,8 +18,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR_ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,14 +41,11 @@ class ProfileValidationManagerTest {
     @InjectMocks
     private ProfileValidationManager validationManager;
 
-    private static final Long PROFILE_ID = 1L;
-    private static final String RIDE_ID = "ride123";
-
     @Test
     void checkIfProfileExists_throwsExceptionIfEmpty() {
-        when(driverProfileRepo.findById(PROFILE_ID)).thenReturn(Optional.empty());
+        when(driverProfileRepo.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> validationManager.checkIfProfileExists(PROFILE_ID))
+        assertThatThrownBy(() -> validationManager.checkIfProfileExists(DEFAULT_ID))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining(ExceptionCodes.DRIVER_NOT_FOUND.getCode());
     }
@@ -56,18 +59,18 @@ class ProfileValidationManagerTest {
 
     @Test
     void getDriverProfile_throwsExceptionIfNotPresent() {
-        when(driverProfileRepo.findById(PROFILE_ID)).thenReturn(Optional.empty());
+        when(driverProfileRepo.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> validationManager.getDriverProfile(PROFILE_ID))
+        assertThatThrownBy(() -> validationManager.getDriverProfile(DEFAULT_ID))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining(ExceptionCodes.DRIVER_NOT_FOUND.getCode());
     }
 
     @Test
     void checkIfPhoneUnique_throwsExceptionIfExists() {
-        when(driverProfileRepo.existsByPhone("123")).thenReturn(true);
+        when(driverProfileRepo.existsByPhone(anyString())).thenReturn(true);
 
-        assertThatThrownBy(() -> validationManager.checkIfPhoneUnique("123"))
+        assertThatThrownBy(() -> validationManager.checkIfPhoneUnique(DEFAULT_STR))
                 .isInstanceOf(InvalidInputException.class)
                 .hasMessageContaining(ExceptionCodes.DRIVER_PHONE_UNIQUE.getCode());
     }
@@ -75,10 +78,10 @@ class ProfileValidationManagerTest {
     @Test
     void findDriverByAcceptedRide_throwsExceptionIfNotificationNotFound() {
         when(notificationRepo.findByRideIdAndStatusAndType(
-                RIDE_ID, NotificationStatus.ACCEPTED, NotificationType.RIDE_CREATION))
+                anyString(), any(NotificationStatus.class), any(NotificationType.class)))
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> validationManager.findDriverByAcceptedRide(RIDE_ID))
+        assertThatThrownBy(() -> validationManager.findDriverByAcceptedRide(DEFAULT_STR_ID))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining(ExceptionCodes.DRIVER_FOR_RIDE_NOT_FOUND.getCode());
     }
@@ -90,10 +93,10 @@ class ProfileValidationManagerTest {
 
         when(notification.getDriverProfile()).thenReturn(driverProfile);
         when(notificationRepo.findByRideIdAndStatusAndType(
-                RIDE_ID, NotificationStatus.ACCEPTED, NotificationType.RIDE_CREATION))
+                anyString(), any(NotificationStatus.class), any(NotificationType.class)))
                 .thenReturn(Optional.of(notification));
 
-        DriverProfile result = validationManager.findDriverByAcceptedRide(RIDE_ID);
+        DriverProfile result = validationManager.findDriverByAcceptedRide(DEFAULT_STR_ID);
         assertThat(result).isEqualTo(driverProfile);
     }
 }

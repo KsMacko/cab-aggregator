@@ -13,33 +13,25 @@ import java.util.Collections;
 
 import static com.internship.driverservice.enums.FieldFilter.FIRST_NAME;
 import static com.internship.driverservice.enums.OrderDirection.ASC;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_DRIVER_STATUS;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_FARE_TYPE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_PAGE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_PAGE_SIZE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_PHONE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_RATE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR;
+import static com.internship.driverservice.util.UtilConstants.UPDATED_FARE_TYPE;
+import static com.internship.driverservice.util.UtilConstants.UPDATED_PHONE;
+import static com.internship.driverservice.util.UtilConstants.UPDATED_STR;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ProfileUtil {
 
-    public static final String DEFAULT_FIRST_NAME = "Иван";
-    public static final String DEFAULT_LAST_NAME = "Иванов";
-    public static final String DEFAULT_FARE_TYPE = "ECONOMY";
-    public static final String DEFAULT_PHONE = "+375336666666";
-    public static final Long DEFAULT_PROFILE_ID = 1L;
-    public static final Integer DEFAULT_RATE = 5;
-    public static final String DEFAULT_DRIVER_STATUS = "FREE";
-    public static final String DEFAULT_FARE = "COMFORT";
-
-    public static final String UPDATED_FIRST_NAME = "Петр";
-    public static final String UPDATED_LAST_NAME = "Петров";
-    public static final String UPDATED_FARE_TYPE = "COMFORT";
-    public static final String UPDATED_PHONE = "+375337777777";
-
-    public static final int DEFAULT_PAGE = 0;
-    public static final int DEFAULT_PAGE_SIZE = 10;
-    public static final String DEFAULT_SORT_FIELD = FIRST_NAME.toString();
-    public static final String DEFAULT_SORT_DIRECTION = ASC.toString();
-
     public static RequestProfileDto requestProfileDto() {
         return RequestProfileDto.builder()
-                .firstName(DEFAULT_FIRST_NAME)
-                .lastName(DEFAULT_LAST_NAME)
+                .firstName(DEFAULT_STR)
+                .lastName(DEFAULT_STR)
                 .fareType(DEFAULT_FARE_TYPE)
                 .phone(DEFAULT_PHONE)
                 .build();
@@ -47,8 +39,8 @@ public final class ProfileUtil {
 
     public static RequestProfileDto updatedRequestProfileDto() {
         return RequestProfileDto.builder()
-                .firstName(UPDATED_FIRST_NAME)
-                .lastName(UPDATED_LAST_NAME)
+                .firstName(UPDATED_STR)
+                .lastName(UPDATED_STR)
                 .fareType(UPDATED_FARE_TYPE)
                 .phone(UPDATED_PHONE)
                 .build();
@@ -56,9 +48,9 @@ public final class ProfileUtil {
 
     public static ResponseProfileDto responseProfileDto() {
         return ResponseProfileDto.builder()
-                .profileId(DEFAULT_PROFILE_ID)
-                .firstName(DEFAULT_FIRST_NAME)
-                .lastName(DEFAULT_LAST_NAME)
+                .profileId(DEFAULT_ID)
+                .firstName(DEFAULT_STR)
+                .lastName(DEFAULT_STR)
                 .fareType(DEFAULT_FARE_TYPE)
                 .driverStatus(DEFAULT_DRIVER_STATUS)
                 .phone(DEFAULT_PHONE)
@@ -68,9 +60,9 @@ public final class ProfileUtil {
 
     public static DriverProfile driverProfile() {
         return DriverProfile.builder()
-                .profileId(DEFAULT_PROFILE_ID)
-                .firstName(DEFAULT_FIRST_NAME)
-                .lastName(DEFAULT_LAST_NAME)
+                .profileId(DEFAULT_ID)
+                .firstName(DEFAULT_STR)
+                .lastName(DEFAULT_STR)
                 .fareType(FareType.valueOf(DEFAULT_FARE_TYPE))
                 .phone(DEFAULT_PHONE)
                 .driverStatus(DriverStatus.valueOf(DEFAULT_DRIVER_STATUS))
@@ -79,8 +71,8 @@ public final class ProfileUtil {
     }
 
     public static void updateEntity(DriverProfile entity) {
-        entity.setFirstName(UPDATED_FIRST_NAME);
-        entity.setLastName(UPDATED_LAST_NAME);
+        entity.setFirstName(UPDATED_STR);
+        entity.setLastName(UPDATED_STR);
         entity.setFareType(FareType.valueOf(UPDATED_FARE_TYPE));
         entity.setPhone(UPDATED_PHONE);
     }

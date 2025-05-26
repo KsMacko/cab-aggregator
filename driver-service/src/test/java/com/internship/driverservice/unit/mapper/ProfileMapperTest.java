@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_RATE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("ProfileMapper unit tests")
@@ -35,8 +36,7 @@ public class ProfileMapperTest {
     @DisplayName("handleEntity maps DriverProfile to ResponseProfileDto")
     void handleEntity_withRating() {
         DriverProfile entity = ProfileUtil.driverProfile();
-        Integer rating = ProfileUtil.DEFAULT_RATE;
-        ResponseProfileDto dto = profileMapper.handleEntity(entity, rating);
+        ResponseProfileDto dto = profileMapper.handleEntity(entity, DEFAULT_RATE);
 
         assertThat(dto).isNotNull();
         assertThat(dto.firstName()).isEqualTo(entity.getFirstName());

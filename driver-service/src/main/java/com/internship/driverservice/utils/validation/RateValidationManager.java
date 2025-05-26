@@ -27,11 +27,11 @@ public class RateValidationManager {
         }
     }
     public void checkParticipants(RideParticipantsConfirmation participants, RequestRateDto requestRate) {
-        if(!participants.passengerId().equals(requestRate.recipientId())){
-            throw new InvalidInputException(PASSENGER_ID_NOT_MATCH_RIDE.getCode());
-        }
-        if(!participants.driverId().equals(requestRate.authorId())){
+        if(!participants.driverId().equals(requestRate.recipientId())){
             throw new InvalidInputException(DRIVER_ID_NOT_MATCH_RIDE.getCode());
+        }
+        if(!participants.passengerId().equals(requestRate.authorId())){
+            throw new InvalidInputException(PASSENGER_ID_NOT_MATCH_RIDE.getCode());
         }
     }
 }

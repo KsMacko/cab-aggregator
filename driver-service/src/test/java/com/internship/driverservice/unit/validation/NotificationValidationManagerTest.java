@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
@@ -29,17 +30,15 @@ class NotificationValidationManagerTest {
     @InjectMocks
     private NotificationValidationManager validationManager;
 
-    private static final Long NOTIFICATION_ID = 1L;
-
     @Test
     void checkNotificationAccordance_returnsNotificationIfCorrectTypeAndActive() {
         Notification notification = mock(Notification.class);
         when(notification.getType()).thenReturn(NotificationType.RIDE_CREATION);
         when(notification.getActivity()).thenReturn(NotificationActivity.ACTIVE);
 
-        when(notificationRepo.findById(NOTIFICATION_ID)).thenReturn(Optional.of(notification));
+        when(notificationRepo.findById(DEFAULT_ID)).thenReturn(Optional.of(notification));
 
-        Notification result = validationManager.checkNotificationAccordance(NOTIFICATION_ID, NotificationType.RIDE_CREATION);
+        Notification result = validationManager.checkNotificationAccordance(DEFAULT_ID, NotificationType.RIDE_CREATION);
         assertThat(result).isEqualTo(notification);
     }
 
@@ -48,9 +47,9 @@ class NotificationValidationManagerTest {
         Notification notification = mock(Notification.class);
         when(notification.getType()).thenReturn(NotificationType.CASH_CONFIRMATION);
 
-        when(notificationRepo.findById(NOTIFICATION_ID)).thenReturn(Optional.of(notification));
+        when(notificationRepo.findById(DEFAULT_ID)).thenReturn(Optional.of(notification));
 
-        assertThatThrownBy(() -> validationManager.checkNotificationAccordance(NOTIFICATION_ID, NotificationType.RIDE_CREATION))
+        assertThatThrownBy(() -> validationManager.checkNotificationAccordance(DEFAULT_ID, NotificationType.RIDE_CREATION))
                 .isInstanceOf(InvalidInputException.class)
                 .hasMessageContaining("notification.doNotAccord");
     }
@@ -61,18 +60,18 @@ class NotificationValidationManagerTest {
         when(notification.getType()).thenReturn(NotificationType.RIDE_CREATION);
         when(notification.getActivity()).thenReturn(NotificationActivity.NON_ACTIVE);
 
-        when(notificationRepo.findById(NOTIFICATION_ID)).thenReturn(Optional.of(notification));
+        when(notificationRepo.findById(DEFAULT_ID)).thenReturn(Optional.of(notification));
 
-        assertThatThrownBy(() -> validationManager.checkNotificationAccordance(NOTIFICATION_ID, NotificationType.RIDE_CREATION))
+        assertThatThrownBy(() -> validationManager.checkNotificationAccordance(DEFAULT_ID, NotificationType.RIDE_CREATION))
                 .isInstanceOf(InvalidInputException.class)
                 .hasMessageContaining("notification.nonActive");
     }
 
     @Test
     void getNotificationByIdIfExists_throwsExceptionIfNotFound() {
-        when(notificationRepo.findById(NOTIFICATION_ID)).thenReturn(Optional.empty());
+        when(notificationRepo.findById(DEFAULT_ID)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> validationManager.getNotificationByIdIfExists(NOTIFICATION_ID))
+        assertThatThrownBy(() -> validationManager.getNotificationByIdIfExists(DEFAULT_ID))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("notification.notFound");
     }
