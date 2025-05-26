@@ -19,12 +19,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.internship.driverservice.util.RateUtil.DEFAULT_AUTHOR_ID;
-import static com.internship.driverservice.util.RateUtil.DEFAULT_RATE_ID;
-import static com.internship.driverservice.util.RateUtil.DEFAULT_RECIPIENT_ID;
 import static com.internship.driverservice.util.RateUtil.rateEntity;
 import static com.internship.driverservice.util.RateUtil.requestRateDto;
 import static com.internship.driverservice.util.RateUtil.responseRateDto;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -78,10 +76,10 @@ class RateServiceTest {
     @Test
     @DisplayName("deleteRate deletes rate after author check")
     void deleteRate_deletesSuccessfully() {;
-        rateService.deleteRate(DEFAULT_AUTHOR_ID, DEFAULT_RATE_ID);
+        rateService.deleteRate(DEFAULT_ID, DEFAULT_ID);
 
-        verify(rateValidationManager).checkRateAuthor(DEFAULT_AUTHOR_ID, DEFAULT_RATE_ID);
-        verify(rateRepo).deleteById(DEFAULT_RATE_ID);
+        verify(rateValidationManager).checkRateAuthor(DEFAULT_ID, DEFAULT_ID);
+        verify(rateRepo).deleteById(DEFAULT_ID);
     }
 
     @Test
@@ -101,8 +99,8 @@ class RateServiceTest {
     @Test
     @DisplayName("deleteRateFromPassenger calls passengerFeignClient to delete")
     void deleteRateFromPassenger_callsFeignClient() {
-        rateService.deleteRateFromPassenger(DEFAULT_RECIPIENT_ID, DEFAULT_RATE_ID);
+        rateService.deleteRateFromPassenger(DEFAULT_ID, DEFAULT_ID);
 
-        verify(passengerFeignClient).deleteRateFromPassenger(DEFAULT_RECIPIENT_ID, DEFAULT_RATE_ID);
+        verify(passengerFeignClient).deleteRateFromPassenger(DEFAULT_ID, DEFAULT_ID);
     }
 }

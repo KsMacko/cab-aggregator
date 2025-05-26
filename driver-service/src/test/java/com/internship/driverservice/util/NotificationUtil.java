@@ -1,4 +1,5 @@
 package com.internship.driverservice.util;
+
 import com.internship.commonevents.event.RideNotificationEvent;
 import com.internship.driverservice.entity.Notification;
 import com.internship.driverservice.entity.PaymentByCashConfirmation;
@@ -9,26 +10,21 @@ import com.internship.driverservice.enums.notification.NotificationType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.internship.driverservice.util.ProfileUtil.DEFAULT_FARE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_AMOUNT;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_FARE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR_ID;
+
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NotificationUtil {
 
-    public static final Long DEFAULT_NOTIFICATION_ID = 1L;
-    public static final String DEFAULT_RIDE_ID = "ride123";
-    public static final BigDecimal DEFAULT_AMOUNT = new BigDecimal("10.55");
-    public static final Long DEFAULT_PASSENGER_ID = 1L;
-    public static final String DEFAULT_START_LOCATION = "Ploshcha lenina";
-    public static final String DEFAULT_END_LOCATIONS = "Vokzal";
-    public static final String DEFAULT_NOTIFICATION_STATUS = "ACCEPTED";
-
     public static Notification notification() {
         return Notification.builder()
-                .rideId(DEFAULT_RIDE_ID)
+                .rideId(DEFAULT_STR_ID)
                 .status(NotificationStatus.NON_VIEWED)
                 .activity(NotificationActivity.ACTIVE)
                 .build();
@@ -38,8 +34,8 @@ public final class NotificationUtil {
         Notification notification = notification();
         notification.setType(NotificationType.RIDE_CREATION);
         return RideCreationNotification.builder()
-                .startLocation(DEFAULT_START_LOCATION)
-                .endLocations(DEFAULT_END_LOCATIONS)
+                .startLocation(DEFAULT_STR)
+                .endLocations(DEFAULT_STR)
                 .notification(notification)
                 .build();
     }
@@ -48,17 +44,17 @@ public final class NotificationUtil {
         notification.setType(NotificationType.CASH_CONFIRMATION);
         return PaymentByCashConfirmation.builder()
                 .amount(DEFAULT_AMOUNT)
-                .passengerId(DEFAULT_PASSENGER_ID)
+                .passengerId(DEFAULT_ID)
                 .notification(notification)
                 .build();
     }
 
     public static RideNotificationEvent createRideNotificationEvent() {
         return RideNotificationEvent.builder()
-                .rideId(DEFAULT_RIDE_ID)
+                .rideId(DEFAULT_STR_ID)
                 .fare(DEFAULT_FARE)
-                .endLocation(List.of(DEFAULT_END_LOCATIONS))
-                .pickupLocation(DEFAULT_START_LOCATION)
+                .endLocation(List.of(DEFAULT_STR))
+                .pickupLocation(DEFAULT_STR)
                 .build();
     }
 }

@@ -31,10 +31,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.internship.driverservice.util.CarUtil.DEFAULT_DRIVER_ID;
-import static com.internship.driverservice.util.NotificationUtil.DEFAULT_NOTIFICATION_ID;
-import static com.internship.driverservice.util.NotificationUtil.DEFAULT_NOTIFICATION_STATUS;
-import static com.internship.driverservice.util.NotificationUtil.DEFAULT_RIDE_ID;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_NOTIFICATION_STATUS;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -72,24 +71,24 @@ class CommandNotificationServiceTest {
 
     @BeforeEach
     void setUp() {
-        driverProfile.setProfileId(DEFAULT_DRIVER_ID);
+        driverProfile.setProfileId(DEFAULT_ID);
         notification.setDriverProfile(driverProfile);
-        notification.setRideId(DEFAULT_RIDE_ID);
+        notification.setRideId(DEFAULT_STR_ID);
     }
 
     @Test
     @DisplayName("updateRideCreatedNotification updates status and activity")
     void updateRideCreatedNotification_updatesStatusAndActivity() {
 
-        when(notificationValidationManager.checkNotificationAccordance(DEFAULT_NOTIFICATION_ID, NotificationType.RIDE_CREATION))
+        when(notificationValidationManager.checkNotificationAccordance(DEFAULT_ID, NotificationType.RIDE_CREATION))
                 .thenReturn(notification);
         when(notification.getRideCreationNotification()).thenReturn(rideCreationNotification);
         when(notification.getDriverProfile()).thenReturn(driverProfile);
-        when(profileValidationManager.findDriverByAcceptedRide(DEFAULT_RIDE_ID)).thenReturn(driverProfile);
-        when(notification.getRideId()).thenReturn(DEFAULT_RIDE_ID);
+        when(profileValidationManager.findDriverByAcceptedRide(DEFAULT_STR_ID)).thenReturn(driverProfile);
+        when(notification.getRideId()).thenReturn(DEFAULT_STR_ID);
 
         RideCreationNotification result = commandNotificationService.updateRideCreatedNotification(
-                DEFAULT_NOTIFICATION_ID,
+                DEFAULT_ID,
                 DEFAULT_NOTIFICATION_STATUS);
 
         verify(notification).setStatus(NotificationStatus.ACCEPTED);

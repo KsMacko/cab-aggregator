@@ -7,34 +7,31 @@ import com.internship.driverservice.entity.DriverProfile;
 import com.internship.driverservice.entity.Rate;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
+
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_RATE;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR_ID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RateUtil {
 
-    public static final Integer DEFAULT_RATE_VALUE = 5;
-    public static final Long DEFAULT_AUTHOR_ID = 1L;
-    public static final Long DEFAULT_RATE_ID = 1L;
-    public static final Long DEFAULT_RECIPIENT_ID = 2L;
-    public static final String DEFAULT_RIDE_ID = "ride123";
-
     public static RequestRateDto requestRateDto() {
         return RequestRateDto.builder()
-                .value(DEFAULT_RATE_VALUE)
-                .authorId(DEFAULT_AUTHOR_ID)
-                .recipientId(DEFAULT_RECIPIENT_ID)
-                .rideId(DEFAULT_RIDE_ID)
+                .value(DEFAULT_RATE)
+                .authorId(DEFAULT_ID)
+                .recipientId(DEFAULT_ID)
+                .rideId(DEFAULT_STR_ID)
                 .build();
     }
 
     public static ResponseRateDto responseRateDto() {
         return ResponseRateDto.builder()
-                .id(DEFAULT_RATE_ID)
-                .value(DEFAULT_RATE_VALUE)
-                .authorId(DEFAULT_AUTHOR_ID)
-                .recipientId(DEFAULT_RECIPIENT_ID)
+                .id(DEFAULT_ID)
+                .value(DEFAULT_RATE)
+                .authorId(DEFAULT_ID)
+                .recipientId(DEFAULT_ID)
                 .createdAt(LocalDateTime.now().minusMinutes(5))
                 .updatedAt(LocalDateTime.now())
                 .build();
@@ -42,18 +39,18 @@ public final class RateUtil {
 
     public static Rate rateEntity() {
         return Rate.builder()
-                .id(DEFAULT_RATE_ID)
-                .value(DEFAULT_RATE_VALUE)
-                .authorId(DEFAULT_AUTHOR_ID)
-                .rideId(DEFAULT_RIDE_ID)
+                .id(DEFAULT_ID)
+                .value(DEFAULT_RATE)
+                .authorId(DEFAULT_ID)
+                .rideId(DEFAULT_STR_ID)
                 .driver(DriverProfile.builder()
-                        .profileId(DEFAULT_RECIPIENT_ID)
+                        .profileId(DEFAULT_ID)
                         .build())
                 .createdAt(LocalDateTime.now().minusMinutes(5))
                 .updatedAt(LocalDateTime.now())
                 .build();
     }
-    public static RideParticipantsConfirmation validRideConfirmation(Long driverId) {
-        return new RideParticipantsConfirmation(driverId, DEFAULT_RECIPIENT_ID);
+    public static RideParticipantsConfirmation validRideConfirmation(Long driverId, Long passengerId) {
+        return new RideParticipantsConfirmation(driverId, passengerId);
     }
 }
