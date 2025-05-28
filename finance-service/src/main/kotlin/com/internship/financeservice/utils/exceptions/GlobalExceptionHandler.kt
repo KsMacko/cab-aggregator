@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 @RequiredArgsConstructor
-class GlobalExceptionHandler {
-    private val messageSource: MessageSource? = null
-
+class GlobalExceptionHandler(
+    private val messageSource: MessageSource
+) {
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidationExceptions(ex: MethodArgumentNotValidException): ResponseEntity<BaseValidationException> {
         val errors = ex.bindingResult
