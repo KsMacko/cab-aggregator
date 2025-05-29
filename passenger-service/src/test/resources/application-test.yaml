@@ -8,6 +8,11 @@ spring:
     show-sql: false
   liquibase:
     enabled: false
-  messages:
-    basename: messages
-    encoding: UTF-8
+  cloud:
+    openfeign:
+      client:
+        config:
+          driver-service:
+            url: http://localhost:8082
+          ride-service:
+            url: http://localhost:8083
