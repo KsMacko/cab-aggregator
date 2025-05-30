@@ -1,6 +1,6 @@
 {
   "value": 5,
-  "authorId": 1,
-  "recipientId": 1,
+  "authorId": 2,
+  "recipientId": 2,
   "rideId": "ride-123"
 }

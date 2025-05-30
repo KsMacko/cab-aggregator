@@ -12,13 +12,15 @@ public class WireMockConfig {
     public WireMockServer driverWireMockServer() {
         return new WireMockServer(WireMockConfiguration.options()
                 .port(8082)
-                .usingFilesUnderClasspath("stub/driver"));
+                .usingFilesUnderClasspath("stub"));
+//        .usingFilesUnderClasspath("stub/mappings/driver"));
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     public WireMockServer rideWireMockServer() {
         return new WireMockServer(WireMockConfiguration.options()
                 .port(8083)
-                .usingFilesUnderClasspath("stub/ride"));
+                .usingFilesUnderClasspath("stub"));
+//        .usingFilesUnderClasspath("stub/mappings/driver"));
     }
 }

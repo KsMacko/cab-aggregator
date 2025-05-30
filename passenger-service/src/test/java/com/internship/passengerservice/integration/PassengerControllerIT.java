@@ -1,5 +1,6 @@
 package com.internship.passengerservice.integration;
 
+import com.internship.passengerservice.config.JsonFileReader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static com.internship.passengerservice.config.JsonFiles.BASE_PASSENGERS;
+import static com.internship.passengerservice.config.JsonFiles.BASE_URL;
 import static com.internship.passengerservice.config.JsonFiles.invalidPassengerRequest;
 import static com.internship.passengerservice.config.JsonFiles.validPassengerFilterRequest;
 import static com.internship.passengerservice.config.JsonFiles.validPassengerRequest;
@@ -19,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PassengerControllerIT extends BaseTest {
@@ -46,7 +49,7 @@ public class PassengerControllerIT extends BaseTest {
                 .andReturn();
 
         String location = result.getResponse().getHeader(HttpHeaders.LOCATION);
-        createdPassengerId = Long.valueOf(location.replace("/api/v1/passengers/", ""));
+        createdPassengerId = Long.valueOf(location.replace(BASE_URL+BASE_PASSENGERS + "/", ""));
     }
 
     @Test
@@ -63,10 +66,9 @@ public class PassengerControllerIT extends BaseTest {
     @Order(3)
     @DisplayName("Get passengers with filter - should return list of passengers")
     void getPassengers_withValidFilter_shouldReturnList() throws Exception {
-        mockMvc.perform(get(BASE_PASSENGERS)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(validPassengerFilterRequest))
-                .andExpect(status().isOk());
+        mockMvc.perform(get(BASE_PASSENGERS).params(JsonFileReader.parseJsonToQueryParams(validPassengerFilterRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.profiles").isArray());
     }
 
     @Test
