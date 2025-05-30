@@ -2,6 +2,7 @@ package com.internship.passengerservice.integration;
 
 
 import com.internship.passengerservice.PassengerServiceApplication;
+import com.internship.passengerservice.config.DisableCommunication;
 import com.internship.passengerservice.config.MySQLContainerConfig;
 import com.internship.passengerservice.config.WireMockConfig;
 import org.junit.jupiter.api.MethodOrderer;
@@ -19,6 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @Import({
         MySQLContainerConfig.class,
+        DisableCommunication.class,
         WireMockConfig.class
 })
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

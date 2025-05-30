@@ -1,0 +1,9 @@
+{
+  "email": "petr@example.com",
+  "phone": "375291234567",
+  "rate": 5,
+  "page": 0,
+  "size": 10,
+  "sortBy": "FIRST_NAME",
+  "order": "ASC"
+}
