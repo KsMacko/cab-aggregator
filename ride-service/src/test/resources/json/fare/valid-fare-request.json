@@ -1,0 +1,8 @@
+{
+  "type": "ECONOMY",
+  "minPrice": 5.50,
+  "freeWaiting": 5,
+  "paidWaitingPrice": 0.50,
+  "pricePerKm": 1.20,
+  "pricePerMin": 0.50
+}

@@ -1,0 +1,8 @@
+{
+  "passengerId": 1,
+  "startLocation": "ул. Ленина, Минск",
+  "endLocation": ["ул. Свердлова, Минск", "ул. К. Маркса, Минск"],
+  "distance": 10.5,
+  "fareType": "ECONOMY",
+  "paymentType": "CARD"
+}

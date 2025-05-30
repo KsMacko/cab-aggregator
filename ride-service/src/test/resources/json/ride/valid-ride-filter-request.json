@@ -1,0 +1,9 @@
+{
+  "passengerId": 1,
+  "status": "CREATED",
+  "fareType": "ECONOMY",
+  "page": 0,
+  "size": 10,
+  "sortBy": "DATE",
+  "order": "ASC"
+}

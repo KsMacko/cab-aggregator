@@ -1,0 +1,8 @@
+{
+  "createdDate": "2025-01-01T00:00:00",
+  "validDate": "2025-12-31T23:59:59",
+  "page": 0,
+  "size": 10,
+  "sortBy": "CREATED_AT",
+  "order": "ASC"
+}
