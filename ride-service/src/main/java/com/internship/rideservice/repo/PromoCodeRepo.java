@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface PromoCodeRepo extends MongoRepository<PromoCode, String> {
     Optional<PromoCode> findByPromoCodeAndValidUntilAfter(String promoCode, LocalDateTime currentDate);
+    Boolean existsByPromoCode(String promoCode);
 }

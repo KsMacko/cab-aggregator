@@ -1,0 +1,9 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/payment"
+  },
+  "response": {
+    "status": 200
+  }
+}

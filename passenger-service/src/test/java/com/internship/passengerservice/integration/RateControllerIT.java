@@ -29,8 +29,7 @@ public class RateControllerIT extends BaseTest {
     public void setUp(){
         PassengerProfile profile = ProfileUtil.validPassengerProfile();
         profile.setProfileId(null);
-        System.out.println("---------------------------------");
-        System.out.println(passengerProfileRepo.save(profile).getProfileId());
+        passengerProfileRepo.save(profile);
     }
 
     @Test

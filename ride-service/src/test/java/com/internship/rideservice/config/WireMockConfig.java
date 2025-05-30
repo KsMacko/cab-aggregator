@@ -1,4 +1,4 @@
-package com.internship.passengerservice.config;
+package com.internship.rideservice.config;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -9,16 +9,17 @@ import org.springframework.context.annotation.Bean;
 public class WireMockConfig {
 
     @Bean(initMethod = "start", destroyMethod = "stop")
-    public WireMockServer driverWireMockServer() {
+    public WireMockServer passengerWireMockServer() {
         return new WireMockServer(WireMockConfiguration.options()
-                .port(8082)
+                .port(8081)
                 .usingFilesUnderClasspath("stub"));
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
-    public WireMockServer rideWireMockServer() {
+    public WireMockServer financeWireMockServer() {
         return new WireMockServer(WireMockConfiguration.options()
-                .port(8083)
+                .port(8084)
                 .usingFilesUnderClasspath("stub"));
     }
 }
+

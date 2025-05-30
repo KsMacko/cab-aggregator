@@ -1,5 +1,7 @@
 package com.internship.rideservice.utils;
 
+import com.internship.commonevents.event.CashConfirmationRequest;
+import com.internship.commonevents.event.ChangeRideStatusEvent;
 import com.internship.rideservice.dto.request.RequestRideDto;
 import com.internship.rideservice.dto.response.ResponseRideDto;
 import com.internship.rideservice.dto.transfer.RideFilterRequest;
@@ -86,6 +88,21 @@ public class RideUtil implements UtilConstants {
                 .pageNumber(DEFAULT_PAGE_NUMBER)
                 .pageSize(1)
                 .totalPages(1)
+                .build();
+    }
+    public static ChangeRideStatusEvent changeRideStatusEvent() {
+        return ChangeRideStatusEvent.builder()
+                .rideId(VALID_ID)
+                .driverId(VALID_PERSON_ID)
+                .status(VALID_RIDE_STATUS)
+                .build();
+    }
+    public static CashConfirmationRequest cashConfirmationRequest(){
+        return CashConfirmationRequest.builder()
+                .passengerId(VALID_PERSON_ID)
+                .driverId(VALID_PERSON_ID)
+                .rideId(VALID_ID)
+                .amount(VALID_PRICE)
                 .build();
     }
 }
