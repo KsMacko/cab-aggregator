@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:file:.env[.properties]
+    import: optional:file:../.env[.properties]
   messages:
     basename: messages
     encoding: UTF-8
@@ -32,4 +32,4 @@ spring:
           passenger-service:
             url: http://localhost:8081/api/v1/passengers
 server:
-  port: ${RIDE_SERVICE_PORT}
+  port: ${RIDE_SERVER_PORT}

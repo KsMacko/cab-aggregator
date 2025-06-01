@@ -25,7 +25,7 @@ public record ResponseRideDto(
         Float distance,
         RideStatus status,
         FareType fareType,
-        BigDecimal price,
+        String price,
         PaymentType paymentType
 ) {
 }

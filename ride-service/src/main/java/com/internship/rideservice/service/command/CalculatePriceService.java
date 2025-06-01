@@ -34,18 +34,17 @@ public class CalculatePriceService {
         BigDecimal totalPrice;
         if (nonNull(promoCode)) {
             totalPrice = maxPrice.multiply(
-                    BigDecimal.ONE.subtract(
-                            BigDecimal.valueOf(promoCode.getDiscount())
-                                    .divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP)));
+                    BigDecimal.ONE.subtract(BigDecimal.valueOf(promoCode.getDiscount())
+                            .divide(BigDecimal.valueOf(100),2, RoundingMode.HALF_UP)));
         } else {
             totalPrice = maxPrice;
         }
-        long waitingTime = Duration.between(ride.getStartWaitingTime(), ride.getStartTime()).toMinutes();
+        long waitingTime = Duration.between(ride.getStartTime(), ride.getStartWaitingTime()).toMinutes();
         if (waitingTime > fare.getFreeWaiting()) {
             totalPrice = totalPrice.add(fare.getPaidWaitingPrice()
                     .multiply(BigDecimal.valueOf(waitingTime - fare.getFreeWaiting()))
             );
         }
-        return totalPrice;
+        return totalPrice.add(fare.getMinPrice()).setScale(2, RoundingMode.HALF_UP);
     }
 }
