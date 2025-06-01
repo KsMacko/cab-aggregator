@@ -100,7 +100,7 @@ public class CommandRideService {
         Ride ride = rideValidationManager.getRideByIdIfExists(rideId);
         ride.setEndTime(LocalTime.now());
         BigDecimal recalculatedPrice = calculatePriceService.ReCalculatePrice(ride);
-        ride.setPrice(recalculatedPrice.setScale(2, RoundingMode.HALF_UP));
+        ride.setPrice(recalculatedPrice.setScale(2, RoundingMode.HALF_UP).toString());
         saveRideAndGetStatus(ride, RideStatus.RECALCULATED);
     }
 
@@ -113,7 +113,7 @@ public class CommandRideService {
                             .driverId(ride.getDriverId())
                             .passengerId(ride.getPassengerId())
                             .rideId(ride.getId())
-                            .amount(ride.getPrice())
+                            .amount(new BigDecimal(ride.getPrice()))
                             .build()
             );
         }
@@ -121,7 +121,7 @@ public class CommandRideService {
             financeFeignClient.createCardPayment(ConfirmedPaymentRequest.builder()
                     .passengerId(ride.getPassengerId())
                     .driverId(ride.getDriverId())
-                    .amount(ride.getPrice())
+                    .amount(new BigDecimal(ride.getPrice()))
                     .build());
         }
         saveRideAndGetStatus(ride, RideStatus.COMPLETED);
