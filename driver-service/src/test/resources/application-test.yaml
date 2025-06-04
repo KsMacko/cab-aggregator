@@ -20,16 +20,3 @@ spring:
             url: http://localhost:8081
           ride-service:
             url: http://localhost:8083
-#  artemis:
-#    broker-url: ${artemis.broker-url}
-#    user: admin
-#    password: admin
-#    mode: native
-#  artemis:
-#    broker-url: tcp://${artemis.host}:${artemis.port}
-#    mode: native
-#    user: admin
-#    password: admin
-#    bootstrap-servers: none
-#    listener:
-#      type: single

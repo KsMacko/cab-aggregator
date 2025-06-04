@@ -29,22 +29,4 @@ public class WireMockConfig {
                 .port(8083)
                 .usingFilesUnderClasspath("stub"));
     }
-
-//    @Bean
-//    public FinanceWireMockStubService financeStubService(
-//            @Qualifier("financeWireMockServer") WireMockServer server) {
-//        return new FinanceWireMockStubService(server);
-//    }
-//
-//    @Bean
-//    public PassengerWireMockStubService passengerStubService(
-//            @Qualifier("passengerWireMockServer") WireMockServer server) {
-//        return new PassengerWireMockStubService(server);
-//    }
-//
-//    @Bean
-//    public RideWireMockStubService rideStubService(
-//            @Qualifier("rideWireMockServer") WireMockServer server) {
-//        return new RideWireMockStubService(server);
-//    }
 }
