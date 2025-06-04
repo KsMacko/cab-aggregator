@@ -1,0 +1,8 @@
+{
+  "driverId": 1,
+  "carNumber": "1234AA7",
+  "isCurrent": true,
+  "brand": "TOYOTA",
+  "page": 0,
+  "pageSize": 10
+}
