@@ -5,6 +5,7 @@ import java.time.LocalDate
 
 interface UtilConstants {
     companion object {
+        const val DEFAULT_INT = 1
         const val DEFAULT_ID = 0L
         const val DEFAULT_PAGE = 0
         const val DEFAULT_SIZE = 10
