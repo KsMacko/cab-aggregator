@@ -1,0 +1,13 @@
+{
+  "phone": "375291234567",
+  "carNumber": "1234AA7",
+  "firstName": "Иван",
+  "lastName": "Иванов",
+  "status": "FREE",
+  "fareType": "COMFORT",
+  "rate": 4,
+  "page": 0,
+  "size": 10,
+  "sortBy": "FIRST_NAME",
+  "order": "ASC"
+}

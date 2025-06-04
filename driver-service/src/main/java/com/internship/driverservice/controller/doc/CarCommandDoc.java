@@ -47,7 +47,7 @@ public interface CarCommandDoc {
                     content = @Content(schema = @Schema(implementation = BaseException.class))
             )
     })
-    @PatchMapping("/cars/{id}")
+    @PatchMapping("/{id}")
     ResponseEntity<ResponseCarDto> setCurrentCar(
             @Parameter(description = "Unique identifier of the car", example = "1", required = true)
             @PositiveOrZero(message = "id.positive")
@@ -70,7 +70,7 @@ public interface CarCommandDoc {
                     content = @Content(schema = @Schema(implementation = BaseValidationException.class))
             )
     })
-    @PostMapping("/cars")
+    @PostMapping
     ResponseEntity<ResponseCarDto> addNewCar(
             @Parameter(description = "Car data to add", required = true)
             @Valid
@@ -96,7 +96,7 @@ public interface CarCommandDoc {
                     content = @Content(schema = @Schema(implementation = BaseException.class))
             )
     })
-    @DeleteMapping("/cars/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteCar(
             @Parameter(description = "Unique identifier of the car", example = "1", required = true)
             @PositiveOrZero(message = "id.positive")
