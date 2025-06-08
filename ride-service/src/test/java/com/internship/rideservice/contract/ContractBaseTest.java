@@ -2,6 +2,7 @@ package com.internship.rideservice.contract;
 
 import com.internship.rideservice.RideServiceApplication;
 import com.internship.rideservice.config.MongoDBContainerConfig;
+import com.internship.rideservice.integration.BaseTest;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,15 +11,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureMessageVerifier;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = RideServiceApplication.class)
+//@SpringBootTest(classes = RideServiceApplication.class)
 @AutoConfigureMessageVerifier
 @DirtiesContext
-@Import(MongoDBContainerConfig.class)
-public class ContractBaseTest {
+@ActiveProfiles("test")
+public class ContractBaseTest extends BaseTest {
     @Autowired
     protected WebApplicationContext context;
 

@@ -18,25 +18,10 @@ public class DisableCommunication {
     }
 
 
-//    @Bean
-//    public ArtemisConfig artemisConfig() {
-//        return Mockito.mock(ArtemisConfig.class);
-//    }
-
     @Bean
     public KafkaProducer kafkaProducer() {
         return Mockito.mock(KafkaProducer.class);
     }
-
-//    @Bean
-//    public KafkaProducerConfig kafkaProducerConfig() {
-//        return Mockito.mock(KafkaProducerConfig.class);
-//    }
-//
-//    @Bean
-//    public KafkaTopicConfig kafkaTopicConfig() {
-//        return Mockito.mock(KafkaTopicConfig.class);
-//    }
 
     @Bean
     public FinanceFeignClient financeFeignClient() {
