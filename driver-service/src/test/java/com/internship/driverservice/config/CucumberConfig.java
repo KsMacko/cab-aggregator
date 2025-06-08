@@ -1,4 +1,4 @@
-package com.internship.driverservice;
+package com.internship.driverservice.config;
 
 import io.cucumber.spring.CucumberContextConfiguration;
 
