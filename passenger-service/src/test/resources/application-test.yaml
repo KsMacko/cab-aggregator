@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+  liquibase:
+    enabled: false
+  cloud:
+    openfeign:
+      client:
+        config:
+          driver-service:
+            url: http://localhost:8082
+          ride-service:
+            url: http://localhost:8083
