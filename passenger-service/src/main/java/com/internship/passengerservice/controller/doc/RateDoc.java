@@ -66,7 +66,7 @@ public interface RateDoc {
                     content = @Content(schema = @Schema(implementation = BaseException.class))
             )
     })
-    @DeleteMapping("/rates/{rateId}/author/driver/{driverId}")
+    @DeleteMapping("/{rateId}/author/driver/{driverId}")
     ResponseEntity<Void> deleteRateFromPassenger(
             @PositiveOrZero(message = "id.positive")
             @Max(value = MAX_ID_VALUE, message = "id.maxValue")
