@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "DELETE",
+    "urlPattern": "/[0-9]+/author/passenger/[0-9]+"
+  },
+  "response": {
+    "status": 204,
+    "body": ""
+  }
+}
