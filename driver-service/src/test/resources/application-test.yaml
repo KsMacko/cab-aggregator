@@ -1,0 +1,22 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+  liquibase:
+    enabled: false
+  cloud:
+    openfeign:
+      client:
+        config:
+          finance-service:
+            url: http://localhost:8084
+          passenger-service:
+            url: http://localhost:8081
+          ride-service:
+            url: http://localhost:8083

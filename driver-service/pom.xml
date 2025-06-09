@@ -71,5 +71,23 @@
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-contract-verifier</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+                <version>4.0.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <baseClassForTests>com.internship.driverservice.contract.ContractBaseTest</baseClassForTests>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

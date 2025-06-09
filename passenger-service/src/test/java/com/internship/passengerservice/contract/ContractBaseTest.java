@@ -1,15 +1,11 @@
-package com.internship.rideservice.contract;
+package com.internship.passengerservice.contract;
 
-import com.internship.rideservice.RideServiceApplication;
-import com.internship.rideservice.config.MongoDBContainerConfig;
-import com.internship.rideservice.integration.BaseTest;
+import com.internship.passengerservice.integration.BaseTest;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureMessageVerifier;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
