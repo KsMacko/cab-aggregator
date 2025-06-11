@@ -10,6 +10,7 @@ import org.mapstruct.factory.Mappers;
 
 import static com.internship.driverservice.util.RateUtil.rateEntity;
 import static com.internship.driverservice.util.RateUtil.requestRateDto;
+import static com.internship.driverservice.util.RateUtil.responseRateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("RateMapper unit tests")
@@ -22,15 +23,12 @@ public class RateMapperTest {
     void handleDto() {
         RequestRateDto dto = requestRateDto();
         Rate entity = rateMapper.handleDto(dto);
+        Rate expectedEntity = rateEntity();
 
-        assertThat(entity).isNotNull();
-        assertThat(entity.getValue()).isEqualTo(dto.value());
-        assertThat(entity.getAuthorId()).isEqualTo(dto.authorId());
-        assertThat(entity.getRideId()).isEqualTo(dto.rideId());
-        assertThat(entity.getId()).isNull();
-        assertThat(entity.getCreatedAt()).isNull();
-        assertThat(entity.getUpdatedAt()).isNull();
-        assertThat(entity.getDriver()).isNull();
+        assertThat(entity)
+                .usingRecursiveComparison()
+                .comparingOnlyFields("value", "authorId", "rideId")
+                .isEqualTo(expectedEntity);
     }
 
     @Test
@@ -38,13 +36,11 @@ public class RateMapperTest {
     void handleEntity() {
         Rate entity = rateEntity();
         ResponseRateDto dto = rateMapper.handleEntity(entity);
+        ResponseRateDto expectedDto = responseRateDto();
 
-        assertThat(dto).isNotNull();
-        assertThat(dto.id()).isEqualTo(entity.getId());
-        assertThat(dto.value()).isEqualTo(entity.getValue());
-        assertThat(dto.authorId()).isEqualTo(entity.getAuthorId());
-        assertThat(dto.recipientId()).isEqualTo(entity.getDriver().getProfileId());
-        assertThat(dto.createdAt()).isEqualTo(entity.getCreatedAt());
-        assertThat(dto.updatedAt()).isEqualTo(entity.getUpdatedAt());
+        assertThat(dto)
+                .usingRecursiveComparison()
+                .ignoringFields("createdAt", "updatedAt")
+                .isEqualTo(expectedDto);
     }
 }

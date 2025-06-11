@@ -18,12 +18,12 @@ class PaymentMapperTest {
     @Test
     fun toDto_shouldMapCreatedAtAndAmountFromFinancialOperation() {
         val payment = PaymentUtil.validPayment(PaymentType.CARD)
-
         val result = paymentMapper.toDto(payment)
+        val expectedResult = PaymentUtil.responsePaymentDto()
 
-        assertThat(result.passengerId).isEqualTo(payment.passengerId)
-        assertThat(result.createdAt.truncatedTo(ChronoUnit.SECONDS)).isEqualTo(payment.financialOperation.createdAt.truncatedTo(java.time.temporal.ChronoUnit.SECONDS))
-        assertThat(result.amount).isEqualTo(payment.financialOperation.amount)
-        assertThat(result.paymentType).isEqualTo(payment.paymentType)
+        assertThat(result)
+            .usingRecursiveComparison()
+            .ignoringFields("createdAt", "paymentType")
+            .isEqualTo(expectedResult)
     }
 }

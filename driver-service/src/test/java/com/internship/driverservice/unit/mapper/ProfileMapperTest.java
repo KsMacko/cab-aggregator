@@ -11,6 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+import static com.internship.driverservice.util.ProfileUtil.driverProfile;
+import static com.internship.driverservice.util.ProfileUtil.responseProfileDto;
 import static com.internship.driverservice.util.UtilConstants.DEFAULT_RATE;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,53 +26,45 @@ public class ProfileMapperTest {
     void handleDto() {
         RequestProfileDto dto = ProfileUtil.requestProfileDto();
         DriverProfile entity = profileMapper.handleDto(dto);
+        DriverProfile expectedDriver = driverProfile();
 
-        assertThat(entity).isNotNull();
-        assertThat(entity.getFirstName()).isEqualTo(dto.firstName());
-        assertThat(entity.getLastName()).isEqualTo(dto.lastName());
-        assertThat(entity.getFareType()).isEqualTo(FareType.valueOf(dto.fareType()));
-        assertThat(entity.getPhone()).isEqualTo(dto.phone());
+        assertThat(entity)
+                .usingRecursiveComparison()
+                .ignoringFields("profileId", "driverStatus", "rates")
+                .isEqualTo(expectedDriver);
     }
 
     @Test
     @DisplayName("handleEntity maps DriverProfile to ResponseProfileDto")
     void handleEntity_withRating() {
-        DriverProfile entity = ProfileUtil.driverProfile();
+        DriverProfile entity = driverProfile();
         ResponseProfileDto dto = profileMapper.handleEntity(entity, DEFAULT_RATE);
+        ResponseProfileDto expectedDto = responseProfileDto();
 
-        assertThat(dto).isNotNull();
-        assertThat(dto.firstName()).isEqualTo(entity.getFirstName());
-        assertThat(dto.lastName()).isEqualTo(entity.getLastName());
-        assertThat(FareType.valueOf(dto.fareType())).isEqualTo(entity.getFareType());
-        assertThat(DriverStatus.valueOf(dto.driverStatus())).isEqualTo(entity.getDriverStatus());
-        assertThat(dto.phone()).isEqualTo(entity.getPhone());
+        assertThat(dto)
+                .usingRecursiveComparison()
+                .ignoringFields("rate")
+                .isEqualTo(expectedDto);
     }
 
-    @Test
-    @DisplayName("handleEntity maps DriverProfile to ResponseProfileDto")
-    void handleEntity_withoutRating() {
-        DriverProfile entity = ProfileUtil.driverProfile();
-        ResponseProfileDto dto = profileMapper.handleEntity(entity);
-
-        assertThat(dto).isNotNull();
-        assertThat(dto.firstName()).isEqualTo(entity.getFirstName());
-        assertThat(dto.lastName()).isEqualTo(entity.getLastName());
-        assertThat(FareType.valueOf(dto.fareType())).isEqualTo(entity.getFareType());
-        assertThat(DriverStatus.valueOf(dto.driverStatus())).isEqualTo(entity.getDriverStatus());
-        assertThat(dto.phone()).isEqualTo(entity.getPhone());
-        assertThat(dto.rate()).isNull();
-    }
 
     @Test
     @DisplayName("updateProfileFromDto updates only non-null fields in DriverProfile from dto")
     void updateProfileFromDto() {
-        DriverProfile entity = ProfileUtil.driverProfile();
+        DriverProfile entity = driverProfile();
         RequestProfileDto dto = ProfileUtil.updatedRequestProfileDto();
+        DriverProfile expectedDriver = DriverProfile.builder()
+                .profileId(entity.getProfileId())
+                .fareType(FareType.valueOf(dto.fareType()))
+                .firstName(dto.firstName())
+                .lastName(dto.lastName())
+                .phone(dto.phone())
+                .build();
         profileMapper.updateProfileFromDto(dto, entity);
 
-        assertThat(entity.getFirstName()).isEqualTo(dto.firstName());
-        assertThat(entity.getLastName()).isEqualTo(dto.lastName());
-        assertThat(entity.getFareType()).isEqualTo(FareType.valueOf(dto.fareType()));
-        assertThat(entity.getPhone()).isEqualTo(dto.phone());
+        assertThat(entity)
+                .usingRecursiveComparison()
+                .comparingOnlyFields("firstName", "lastName", "phone", "fareType")
+                .isEqualTo(expectedDriver);
     }
 }

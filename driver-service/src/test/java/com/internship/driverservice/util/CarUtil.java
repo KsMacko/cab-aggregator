@@ -33,10 +33,10 @@ public final class CarUtil {
     public static ResponseCarDto responseCarDto() {
         return ResponseCarDto.builder()
                 .driverId(DEFAULT_ID)
-                .isCurrent(UPDATED_IS_CURRENT)
-                .carNumber(UPDATED_CAR_NUMBER)
-                .brand(UPDATED_BRAND)
-                .color(UPDATED_COLOR)
+                .isCurrent(DEFAULT_IS_CURRENT)
+                .carNumber(DEFAULT_CAR_NUMBER)
+                .brand(DEFAULT_BRAND)
+                .color(DEFAULT_COLOR)
                 .build();
     }
 

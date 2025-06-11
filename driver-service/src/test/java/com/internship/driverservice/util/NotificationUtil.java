@@ -1,6 +1,8 @@
 package com.internship.driverservice.util;
 
 import com.internship.commonevents.event.RideNotificationEvent;
+import com.internship.driverservice.dto.response.PaymentByCashConfirmationDto;
+import com.internship.driverservice.dto.response.RideCreatedNotificationDto;
 import com.internship.driverservice.entity.Notification;
 import com.internship.driverservice.entity.PaymentByCashConfirmation;
 import com.internship.driverservice.entity.RideCreationNotification;
@@ -12,9 +14,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ACTIVITY;
 import static com.internship.driverservice.util.UtilConstants.DEFAULT_AMOUNT;
 import static com.internship.driverservice.util.UtilConstants.DEFAULT_FARE;
 import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_NOTIFICATION_STATUS;
 import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR;
 import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR_ID;
 
@@ -46,6 +50,26 @@ public final class NotificationUtil {
                 .amount(DEFAULT_AMOUNT)
                 .passengerId(DEFAULT_ID)
                 .notification(notification)
+                .build();
+    }
+    public static RideCreatedNotificationDto rideCreatedNotificationDto(){
+        return RideCreatedNotificationDto.builder()
+                .rideId(DEFAULT_STR_ID)
+                .status(NotificationStatus.valueOf(DEFAULT_NOTIFICATION_STATUS))
+                .activity(DEFAULT_ACTIVITY)
+                .startLocation(DEFAULT_STR)
+                .endLocations(DEFAULT_STR)
+                .type(NotificationType.RIDE_CREATION)
+                .build();
+    }
+    public static PaymentByCashConfirmationDto paymentByCashConfirmationDto(){
+        return PaymentByCashConfirmationDto.builder()
+                .rideId(DEFAULT_STR_ID)
+                .status(NotificationStatus.valueOf(DEFAULT_NOTIFICATION_STATUS))
+                .activity(DEFAULT_ACTIVITY)
+                .passengerId(DEFAULT_ID)
+                .type(NotificationType.CASH_CONFIRMATION)
+                .amount(DEFAULT_AMOUNT)
                 .build();
     }
 

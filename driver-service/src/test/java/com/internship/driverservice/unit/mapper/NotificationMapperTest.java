@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+import static com.internship.driverservice.util.NotificationUtil.paymentByCashConfirmationDto;
+import static com.internship.driverservice.util.NotificationUtil.rideCreatedNotificationDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("NotificationMapper unit tests")
@@ -22,17 +24,11 @@ public class NotificationMapperTest {
     void handleRideCreationNotificationEntity() {
         RideCreationNotification entity = NotificationUtil.rideCreationNotification();
         RideCreatedNotificationDto dto = mapper.handleEntity(entity);
+        RideCreatedNotificationDto expectedResult = rideCreatedNotificationDto();
 
-        assertThat(dto).isNotNull();
-        assertThat(dto.id()).isEqualTo(entity.getId());
-        assertThat(dto.rideId()).isEqualTo(entity.getNotification().getRideId());
-        assertThat(dto.type()).isEqualTo(entity.getNotification().getType());
-        assertThat(dto.status()).isEqualTo(entity.getNotification().getStatus());
-        assertThat(dto.activity()).isEqualTo(entity.getNotification().getActivity());
-        assertThat(dto.createdAt()).isEqualTo(entity.getNotification().getCreatedAt());
-        assertThat(dto.updatedAt()).isEqualTo(entity.getNotification().getUpdatedAt());
-        assertThat(dto.startLocation()).isEqualTo(entity.getStartLocation());
-        assertThat(dto.endLocations()).isEqualTo(entity.getEndLocations());
+        assertThat(dto)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
     }
 
     @Test
@@ -40,16 +36,10 @@ public class NotificationMapperTest {
     void handlePaymentByCashConfirmationEntity() {
         PaymentByCashConfirmation entity = NotificationUtil.paymentByCashConfirmation();
         PaymentByCashConfirmationDto dto = mapper.handleEntity(entity);
+        PaymentByCashConfirmationDto expectedResult = paymentByCashConfirmationDto();
 
-        assertThat(dto).isNotNull();
-        assertThat(dto.id()).isEqualTo(entity.getId());
-        assertThat(dto.rideId()).isEqualTo(entity.getNotification().getRideId());
-        assertThat(dto.type()).isEqualTo(entity.getNotification().getType());
-        assertThat(dto.status()).isEqualTo(entity.getNotification().getStatus());
-        assertThat(dto.activity()).isEqualTo(entity.getNotification().getActivity());
-        assertThat(dto.createdAt()).isEqualTo(entity.getNotification().getCreatedAt());
-        assertThat(dto.updatedAt()).isEqualTo(entity.getNotification().getUpdatedAt());
-        assertThat(dto.amount()).isEqualTo(entity.getAmount());
-        assertThat(dto.passengerId()).isEqualTo(entity.getPassengerId());
+        assertThat(dto)
+                .usingRecursiveComparison()
+                .isEqualTo(expectedResult);
     }
 }

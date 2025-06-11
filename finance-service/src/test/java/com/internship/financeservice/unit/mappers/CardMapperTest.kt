@@ -20,18 +20,19 @@ class CardMapperTest {
 
         val result = cardMapper.toDto(entity)
 
-        assertThat(result).usingRecursiveComparison().isEqualTo(expectedDto)
+        assertThat(result)
+            .usingRecursiveComparison()
+            .isEqualTo(expectedDto)
     }
 
     @Test
     fun toEntity_shouldMapOnlyNonNullFields_whenValidDto() {
         val dto = CardUtil.validCardDto()
         val result = cardMapper.toEntity(dto)
+        val expectedEntity = CardUtil.validCard()
 
-        assertThat(result.lastFourDigits).isEqualTo(dto.lastFourDigits)
-        assertThat(result.expirationDate).isEqualTo(dto.expirationDate)
-        assertThat(result.owner).isEqualTo(dto.owner)
-        assertThat(result.ownerId).isEqualTo(dto.ownerId)
-        assertThat(result.cardType).isEqualTo(dto.cardType)
+        assertThat(result)
+            .usingRecursiveComparison()
+            .isEqualTo(expectedEntity)
     }
 }
