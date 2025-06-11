@@ -24,7 +24,6 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
 @DisplayName("CommandCarService unit tests")
 @ExtendWith(MockitoExtension.class)
 class CommandCarServiceTest {

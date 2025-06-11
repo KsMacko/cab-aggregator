@@ -35,7 +35,11 @@ import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
 import static com.internship.driverservice.util.UtilConstants.DEFAULT_NOTIFICATION_STATUS;
 import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR_ID;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CommandNotificationService unit tests")

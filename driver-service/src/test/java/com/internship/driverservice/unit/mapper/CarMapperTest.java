@@ -4,7 +4,6 @@ import com.internship.driverservice.dto.mapper.CarMapper;
 import com.internship.driverservice.dto.request.RequestCarDto;
 import com.internship.driverservice.dto.response.ResponseCarDto;
 import com.internship.driverservice.entity.Car;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

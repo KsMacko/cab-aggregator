@@ -4,7 +4,6 @@ import com.internship.driverservice.dto.mapper.ProfileMapper;
 import com.internship.driverservice.dto.request.RequestProfileDto;
 import com.internship.driverservice.dto.response.ResponseProfileDto;
 import com.internship.driverservice.entity.DriverProfile;
-import com.internship.driverservice.enums.DriverStatus;
 import com.internship.driverservice.enums.FareType;
 import com.internship.driverservice.util.ProfileUtil;
 import org.junit.jupiter.api.DisplayName;
