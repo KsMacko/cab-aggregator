@@ -46,7 +46,7 @@ public class RideUtil implements UtilConstants {
                 .startWaitingTime(LocalTime.now().plusMinutes(3))
                 .startTime(LocalTime.now().plusMinutes(4))
                 .endTime(LocalTime.now().plusMinutes(10))
-                .price(VALID_PRICE)
+                .price(VALID_PRICE.toString())
                 .build();
     }
 
@@ -66,7 +66,7 @@ public class RideUtil implements UtilConstants {
                 .startWaitingTime(LocalTime.now().plusMinutes(3))
                 .startTime(LocalTime.now().plusMinutes(4))
                 .endTime(LocalTime.now().plusMinutes(10))
-                .price(VALID_PRICE)
+                .price(VALID_PRICE.toString())
                 .build();
     }
 

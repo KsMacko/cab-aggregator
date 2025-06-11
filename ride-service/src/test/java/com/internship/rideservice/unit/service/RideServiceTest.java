@@ -135,7 +135,7 @@ class RideServiceTest implements UtilConstants {
 
         commandRideService.changeRideStatusRecalculated(VALID_ID);
 
-        verify(validRide).setPrice(any(BigDecimal.class));
+        verify(validRide).setPrice(any(BigDecimal.class).toString());
         verify(validRide).setStatus(any(RideStatus.class));
     }
 
