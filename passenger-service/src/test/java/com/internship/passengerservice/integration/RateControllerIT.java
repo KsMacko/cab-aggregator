@@ -1,7 +1,12 @@
 package com.internship.passengerservice.integration;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.internship.passengerservice.entity.PassengerProfile;
+import com.internship.passengerservice.entity.Rate;
 import com.internship.passengerservice.repo.PassengerProfileRepo;
+import com.internship.passengerservice.repo.RateRepo;
 import com.internship.passengerservice.util.ProfileUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -10,14 +15,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.internship.passengerservice.config.JsonFiles.BASE_RATES;
 import static com.internship.passengerservice.config.JsonFiles.validRateRequest;
+import static com.internship.passengerservice.util.ProfileUtil.validPassengerProfile;
+import static com.internship.passengerservice.util.RateUtil.validRateEntity;
 import static com.internship.passengerservice.util.UtilConstants.VALID_ID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Transactional
 public class RateControllerIT extends BaseTest {
 
     @Autowired
@@ -25,15 +34,14 @@ public class RateControllerIT extends BaseTest {
 
     @Autowired
     private PassengerProfileRepo passengerProfileRepo;
-    @BeforeAll
-    public void setUp(){
-        PassengerProfile profile = ProfileUtil.validPassengerProfile();
-        profile.setProfileId(null);
-        passengerProfileRepo.save(profile);
-    }
+
+    @Autowired
+    private RateRepo rateRepo;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
 
     @Test
-    @Order(1)
     @DisplayName("Set rate to driver - should return 200")
     void setRateToDriver_shouldReturnOk() throws Exception {
         mockMvc.perform(post(BASE_RATES + "/author/passenger")
@@ -43,30 +51,39 @@ public class RateControllerIT extends BaseTest {
     }
 
     @Test
-    @Order(2)
     @DisplayName("Set rate to passenger - should return 200")
     void setRateToPassenger_shouldReturnOk() throws Exception {
+        Long createdProfileId = passengerProfileRepo.save(validPassengerProfile()).getProfileId();
+        JsonNode jsonNode = objectMapper.readTree(validRateRequest);
+        ObjectNode objectNode = (ObjectNode) jsonNode;
+        objectNode.put("recipientId", createdProfileId);
+        String modifiedJson =  objectMapper.writeValueAsString(objectNode);
         mockMvc.perform(post(BASE_RATES + "/author/driver")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(validRateRequest))
+                        .content(modifiedJson))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @Order(3)
     @DisplayName("Delete rate from passenger - should return 204 No Content")
     void deleteRateFromPassenger_shouldReturnNoContent() throws Exception {
+        Rate rate = createRate();
         mockMvc.perform(delete(BASE_RATES + "/{rateId}/author/passenger/{passengerId}",
-                        VALID_ID, VALID_ID+1))
+                        rate.getId(), rate.getAuthorId()))
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    @Order(4)
     @DisplayName("Delete rate from driver - should return 204 No Content")
     void deleteRateFromDriver_shouldReturnNoContent() throws Exception {
+        Rate rate = createRate();
         mockMvc.perform(delete(BASE_RATES + "/{rateId}/author/driver/{driverId}",
-                        VALID_ID, VALID_ID+1))
+                        rate.getId(), rate.getAuthorId()))
                 .andExpect(status().isNoContent());
+    }
+    private Rate createRate(){
+        Rate rate = validRateEntity();
+        rate.setPassenger(passengerProfileRepo.save(validPassengerProfile()));
+        return rateRepo.save(rate);
     }
 }

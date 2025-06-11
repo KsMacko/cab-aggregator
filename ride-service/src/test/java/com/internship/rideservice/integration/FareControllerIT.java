@@ -1,5 +1,7 @@
 package com.internship.rideservice.integration;
 
+import com.internship.rideservice.entity.Fare;
+import com.internship.rideservice.repo.FareRepo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import static com.internship.rideservice.config.JsonFiles.BASE_FARES;
 import static com.internship.rideservice.config.JsonFiles.BASE_URL;
 import static com.internship.rideservice.config.JsonFiles.invalidFareRequest;
 import static com.internship.rideservice.config.JsonFiles.validFareRequest;
+import static com.internship.rideservice.utils.FareUtil.fareEntity;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,21 +30,18 @@ public class FareControllerIT extends BaseTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private static String fareType;
+    @Autowired
+    private FareRepo fareRepo;
 
     @Test
-    @Order(1)
     @DisplayName("Create fare with valid data - should return 201 and location")
     void createFare_shouldReturnCreated_withLocationHeader() throws Exception {
-        MvcResult result = mockMvc.perform(post(BASE_FARES)
+        mockMvc.perform(post(BASE_FARES)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(validFareRequest))
                 .andExpect(status().isCreated())
                 .andExpect(header().string(HttpHeaders.LOCATION, containsString(BASE_FARES + "/")))
                 .andReturn();
-
-        String location = result.getResponse().getHeader(HttpHeaders.LOCATION);
-        fareType = location.replace(BASE_URL + BASE_FARES + "/", "");
     }
 
     @Test
@@ -59,9 +59,10 @@ public class FareControllerIT extends BaseTest {
     @Order(3)
     @DisplayName("Get fare by type after creation - should return 200")
     void getFareByType_shouldReturnOk() throws Exception {
-        mockMvc.perform(get(BASE_FARES + "/{type}", fareType))
+        Fare fare = createFare();
+        mockMvc.perform(get(BASE_FARES + "/{type}", fare.getType()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.type").value(fareType));
+                .andExpect(jsonPath("$.type").value(fare.getType().toString()));
     }
 
     @Test
@@ -78,11 +79,12 @@ public class FareControllerIT extends BaseTest {
     @Order(6)
     @DisplayName("Delete fare by type - should return 204")
     void deleteFare_byType_shouldReturnNoContent() throws Exception {
-        mockMvc.perform(get(BASE_FARES + "/{type}", fareType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.type").value(fareType));
-        mockMvc.perform(delete(BASE_FARES + "/{type}", fareType))
+       Fare fare = createFare();
+        mockMvc.perform(delete(BASE_FARES + "/{type}", fare.getType()))
                 .andExpect(status().isNoContent());
     }
 
+    private Fare createFare(){
+        return fareRepo.save(fareEntity());
+    }
 }

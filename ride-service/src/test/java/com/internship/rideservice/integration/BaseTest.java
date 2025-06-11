@@ -22,8 +22,6 @@ import org.springframework.test.context.ActiveProfiles;
         DisableCommunication.class,
         WireMockConfig.class
 })
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class BaseTest {
 
 }

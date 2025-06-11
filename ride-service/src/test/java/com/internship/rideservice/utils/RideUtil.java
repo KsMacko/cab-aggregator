@@ -54,7 +54,6 @@ public class RideUtil implements UtilConstants {
 
     public static Ride rideEntity() {
         return Ride.builder()
-                .id(VALID_ID)
                 .passengerId(VALID_PERSON_ID)
                 .driverId(VALID_PERSON_ID)
                 .promoCode(VALID_PROMO_CODE)

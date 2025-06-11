@@ -7,6 +7,8 @@ import com.internship.rideservice.entity.PromoCode;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PromoCodeUtil implements UtilConstants {
 
@@ -31,6 +33,7 @@ public class PromoCodeUtil implements UtilConstants {
                 .id(VALID_ID)
                 .promoCode(VALID_PROMO_CODE)
                 .discount(VALID_DISCOUNT)
+                .validUntil(LocalDateTime.now().plusMonths(3))
                 .build();
     }
 
