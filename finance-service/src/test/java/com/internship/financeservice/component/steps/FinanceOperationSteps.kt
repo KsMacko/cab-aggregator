@@ -22,7 +22,6 @@ import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import org.junit.Assert.assertEquals
 import org.mockito.ArgumentCaptor
-import org.mockito.kotlin.any
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -30,7 +29,7 @@ import org.mockito.Mockito.atLeastOnce
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.argThat
+import org.mockito.kotlin.any
 import org.mockito.kotlin.firstValue
 import org.mockito.kotlin.mock
 import java.math.BigDecimal

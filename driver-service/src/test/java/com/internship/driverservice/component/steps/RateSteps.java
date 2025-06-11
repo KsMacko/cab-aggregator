@@ -129,12 +129,6 @@ public class RateSteps {
                 .build();
 
         this.currentRateDto = dto;
-
-//        when(rateMapper.handleDto(dto)).thenReturn(Rate.builder()
-//                .driver(driverProfile)
-//                .authorId(passengerId)
-//                .value(5)
-//                .build());
     }
 
     @When("I get the rate")
