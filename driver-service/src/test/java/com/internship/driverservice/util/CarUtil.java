@@ -42,7 +42,6 @@ public final class CarUtil {
 
     public static Car carEntity() {
         return Car.builder()
-                .id(DEFAULT_ID)
                 .carNumber(DEFAULT_CAR_NUMBER)
                 .brand(DEFAULT_BRAND)
                 .color(DEFAULT_COLOR)

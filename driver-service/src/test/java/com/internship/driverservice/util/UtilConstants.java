@@ -15,14 +15,14 @@ public interface UtilConstants {
 
     String DEFAULT_STR = "Иван";
     String DEFAULT_FARE_TYPE = "ECONOMY";
-    String DEFAULT_PHONE = "+375336666666";
+    String DEFAULT_PHONE = "375336666666";
     Long DEFAULT_ID = 1L;
     Integer DEFAULT_RATE = 5;
     String DEFAULT_DRIVER_STATUS = "FREE";
     String DEFAULT_FARE = "COMFORT";
     String UPDATED_STR = "Петр";
     String UPDATED_FARE_TYPE = "COMFORT";
-    String UPDATED_PHONE = "+375337777777";
+    String UPDATED_PHONE = "375337777777";
 
     String DEFAULT_CAR_NUMBER = "A123AA777";
     String DEFAULT_BRAND = "Toyota";

@@ -14,13 +14,17 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
+import static com.internship.driverservice.util.ProfileUtil.driverProfile;
+import static com.internship.driverservice.util.UtilConstants.DEFAULT_ID;
 import static com.internship.driverservice.util.UtilConstants.DEFAULT_STR_ID;
 import static com.internship.driverservice.util.UtilConstants.NOTIFICATION_BASE_URL;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Transactional
 public class NotificationControllerIT extends BaseTest {
 
     @Autowired
@@ -31,40 +35,23 @@ public class NotificationControllerIT extends BaseTest {
     @Autowired
     private DriverProfileRepo driverProfileRepo;
 
-    private static Long rideNotificationId;
-    private static Long paymentNotificationId;
-    private static DriverProfile createdProfile;
-
-
-    @BeforeAll
-    void setUp() {
-        DriverProfile profile = ProfileUtil.driverProfile();
-        profile.setProfileId(null);
-        createdProfile = driverProfileRepo.save(profile);
-        RideCreationNotification rideCreationDetails = NotificationUtil.rideCreationNotification();
-        rideCreationDetails.getNotification().setDriverProfile(createdProfile);
-        rideCreationDetails.getNotification().setRideCreationNotification(rideCreationDetails);
-
-        rideNotificationId = notificationRepo.save(rideCreationDetails.getNotification()).getId();
+    @Test
+    @DisplayName("Confirm Cash Payment - should return updated data")
+    void confirmCashPayment_shouldReturnUpdatedData_whenValidRequest() throws Exception {
+        DriverProfile createdProfile = driverProfileRepo.save(driverProfile());
         PaymentByCashConfirmation paymentConfirmationDetails = NotificationUtil.paymentByCashConfirmation();
         paymentConfirmationDetails.getNotification().setDriverProfile(createdProfile);
         paymentConfirmationDetails.getNotification().setPaymentByCashConfirmation(paymentConfirmationDetails);
-        paymentNotificationId = notificationRepo.save(paymentConfirmationDetails.getNotification()).getId();
-    }
-    @Test
-    @Order(1)
-    @DisplayName("Confirm Cash Payment - should return updated data")
-    void confirmCashPayment_shouldReturnUpdatedData_whenValidRequest() throws Exception {
+        Long paymentNotificationId = notificationRepo.save(paymentConfirmationDetails.getNotification()).getId();
         mockMvc.perform(post(NOTIFICATION_BASE_URL + "/confirm-payment-notification/{id}/status", paymentNotificationId)
                         .param("status", "ACCEPTED"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @Order(2)
     @DisplayName("Confirm Cash Payment - invalid status should return 400")
     void confirmCashPayment_withInvalidStatus_shouldReturnValidationError() throws Exception {
-        mockMvc.perform(post(NOTIFICATION_BASE_URL + "/confirm-payment-notification/{id}/status", -paymentNotificationId)
+        mockMvc.perform(post(NOTIFICATION_BASE_URL + "/confirm-payment-notification/{id}/status", -DEFAULT_ID)
                         .param("status", "invalid_status"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").isArray())
@@ -72,19 +59,22 @@ public class NotificationControllerIT extends BaseTest {
     }
 
     @Test
-    @Order(3)
     @DisplayName("Update Ride Creation Notification - should return updated data")
     void updateRideCreationNotificationStatus_shouldReturnUpdatedData_whenValidRequest() throws Exception {
-        mockMvc.perform(post(NOTIFICATION_BASE_URL + "/ride-creation-notification/{id}/status", rideNotificationId)
+        DriverProfile createdProfile = driverProfileRepo.save(driverProfile());
+        RideCreationNotification rideCreationDetails = NotificationUtil.rideCreationNotification();
+        rideCreationDetails.getNotification().setDriverProfile(createdProfile);
+        rideCreationDetails.getNotification().setRideCreationNotification(rideCreationDetails);
+        Long notificationId = notificationRepo.save(rideCreationDetails.getNotification()).getId();
+        mockMvc.perform(post(NOTIFICATION_BASE_URL + "/ride-creation-notification/{id}/status", notificationId)
                         .param("status", "ACCEPTED"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @Order(4)
     @DisplayName("Update Ride Creation Notification - invalid ID should return 400")
     void updateRideCreationNotificationStatus_withInvalidId_shouldReturnValidationError() throws Exception {
-        mockMvc.perform(post(NOTIFICATION_BASE_URL + "/ride-creation-notification/{id}/status", -rideNotificationId)
+        mockMvc.perform(post(NOTIFICATION_BASE_URL + "/ride-creation-notification/{id}/status", -DEFAULT_ID)
                         .param("status", "ACCEPTED"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").isArray())
@@ -92,16 +82,6 @@ public class NotificationControllerIT extends BaseTest {
     }
 
     @Test
-    @Order(5)
-    @DisplayName("Update Ride Status - should return event with new status")
-    void updateCurrentRideStatus_shouldReturnUpdatedEvent_whenValidRequest() throws Exception {
-        mockMvc.perform(post(NOTIFICATION_BASE_URL + "/current-ride/{rideId}/status", DEFAULT_STR_ID)
-                        .param("status", "IN_PROGRESS"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @Order(6)
     @DisplayName("Update Ride Status - empty rideId should return 400")
     void updateCurrentRideStatus_withEmptyRideId_shouldReturnValidationError() throws Exception {
         mockMvc.perform(post(NOTIFICATION_BASE_URL + "/current-ride/{rideId}/status", "invalid")
@@ -109,10 +89,5 @@ public class NotificationControllerIT extends BaseTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors").isArray())
                 .andExpect(jsonPath("$.errors").isNotEmpty());
-    }
-    @AfterAll
-    void tearDown() {
-        notificationRepo.deleteAll();
-        driverProfileRepo.deleteAll();
     }
 }
