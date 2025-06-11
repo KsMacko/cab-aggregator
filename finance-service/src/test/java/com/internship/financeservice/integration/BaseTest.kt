@@ -27,8 +27,6 @@ import org.springframework.test.web.servlet.MockMvc
     MySQLContainerConfig::class,
     DisableBroker::class
 )
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class BaseTest {
 
     @Autowired

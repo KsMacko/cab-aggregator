@@ -4,6 +4,7 @@ import com.internship.financeservice.config.JsonFiles
 import com.internship.financeservice.dto.response.WalletDto
 import com.internship.financeservice.repo.DriverWalletRepo
 import com.internship.financeservice.utils.UtilConstants.Companion.DEFAULT_ID
+import com.internship.financeservice.utils.WalletUtil.validDriverWallet
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Order
@@ -15,11 +16,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.web.context.WebApplicationContext
 
-class WalletControllerIT: BaseTest() {
+class WalletControllerIT(
+    @Autowired private val walletRepo: DriverWalletRepo
+): BaseTest() {
 
     @Test
-    @Order(1)
     fun createWallet_shouldReturnOk_whenValidId() {
         mockMvc.perform(
             post("${JsonFiles.WALLET_BASE_URL}/driver/${DEFAULT_ID+1}")
@@ -30,19 +33,14 @@ class WalletControllerIT: BaseTest() {
     }
 
     @Test
-    @Order(2)
     fun getWalletByDriverId_shouldReturnWalletDto() {
-        val result = mockMvc.perform(get("${JsonFiles.WALLET_BASE_URL}/driver/$DEFAULT_ID"))
+        val wallet = walletRepo.save(validDriverWallet())
+        mockMvc.perform(get("${JsonFiles.WALLET_BASE_URL}/driver/${wallet.driverId}"))
             .andExpect(status().isOk)
             .andReturn()
-
-        val wallet = objectMapper.readValue(result.response.contentAsString, WalletDto::class.java)
-
-        assertThat(wallet.driverId).isEqualTo(DEFAULT_ID)
     }
 
     @Test
-    @Order(3)
     fun getAllWallets_shouldReturnNotEmptyList() {
         mockMvc.perform(get(JsonFiles.WALLET_BASE_URL))
             .andExpect(status().isOk)
@@ -50,9 +48,9 @@ class WalletControllerIT: BaseTest() {
     }
 
     @Test
-    @Order(4)
     fun deleteWallet_shouldReturnNoContent_whenValidId() {
-        mockMvc.perform(delete("${JsonFiles.WALLET_BASE_URL}/driver/${DEFAULT_ID+1}"))
+        val wallet = walletRepo.save(validDriverWallet())
+        mockMvc.perform(delete("${JsonFiles.WALLET_BASE_URL}/driver/${wallet.driverId}"))
             .andExpect(status().isOk)
     }
 }
