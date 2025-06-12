@@ -16,12 +16,12 @@ spring:
       client:
         config:
           driver-service:
-            url: ${SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_DRIVER_SERVICE_URL}
+            url: http://localhost:8082/api/v1/drivers
           ride-service:
-            url: ${SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_RIDE_SERVICE_URL}
+            url: http://localhost:8083/api/v1/rides
   messages:
     basename: messages
     encoding: UTF-8
 
 server:
-  port: ${SERVER_PORT:-8081}
+  port: 8081

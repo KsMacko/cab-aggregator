@@ -1,10 +1,12 @@
 spring:
+#  config:
+#    import: file:../.env[.properties]
   application:
     name: finance-service
   datasource:
     url: ${SPRING_DATASOURCE_URL}
-    username: root
-    password: asdfhcjsjffh
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect

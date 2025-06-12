@@ -25,10 +25,10 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic RideCreationTopic() {
-        return new NewTopic("ride-creation", 3, (short) 3);
+        return new NewTopic("ride-creation", 3, (short) 1);
     }
     @Bean
     public NewTopic confirmCashPaymentTopic() {
-        return new NewTopic("confirm-payment", 3, (short) 3);
+        return new NewTopic("confirm-payment", 3, (short) 1);
     }
 }
