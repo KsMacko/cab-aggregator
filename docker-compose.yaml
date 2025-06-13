@@ -76,8 +76,6 @@ services:
       - "61616:61616"
       - "8161:8161"
     environment:
-#      ARTEMIS_USERNAME: ${ARTEMIS_USER?Artemis user is required}
-#      ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD?Password for artemis is required}
       ANONYMOUS_LOGIN: true
     healthcheck:
       test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8161/console" ]
@@ -87,6 +85,40 @@ services:
       start_period: 40s
     networks:
       - artemis-network
+
+  eureka-service:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - '8761:8761'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - common-network
+
+  gateway:
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    depends_on:
+      eureka-service:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      EUREKA_SERVICE_URL: ${EUREKA_URL}
+    restart: on-failure
+    networks:
+      - common-network
 
   driver-service:
     build:
@@ -105,6 +137,7 @@ services:
     env_file:
       - .env
     environment:
+      EUREKA_SERVICE_URL: ${EUREKA_URL}
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${DRIVER_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQL_ROOT_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -113,10 +146,12 @@ services:
       SPRING_ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD}
       SPRING_ARTEMIS_BROKER: ${ARTEMIS_BROKER_URL}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: ${BOOTSTRAP_SERVERS}
+    restart: on-failure
     networks:
       - sql-network
       - kafka-network
       - artemis-network
+      - common-network
 
   passenger-service:
     build:
@@ -135,11 +170,14 @@ services:
     env_file:
       - .env
     environment:
+      EUREKA_SERVICE_URL: ${EUREKA_URL}
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${PASSENGER_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQL_ROOT_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    restart: on-failure
     networks:
       - sql-network
+      - common-network
 
   finance-service:
     build:
@@ -156,15 +194,18 @@ services:
     env_file:
       - .env
     environment:
+      EUREKA_SERVICE_URL: ${EUREKA_URL}
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${FINANCE_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_ARTEMIS_BROKER_URL: ${ARTEMIS_BROKER_URL}
       SPRING_ARTEMIS_USER: ${ARTEMIS_USER}
       SPRING_ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD}
       SPRING_DATASOURCE_USERNAME: ${MYSQL_ROOT_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    restart: on-failure
     networks:
       - sql-network
       - artemis-network
+      - common-network
 
   ride-service:
     build:
@@ -181,16 +222,19 @@ services:
     env_file:
       - .env
     environment:
+      EUREKA_SERVICE_URL: ${EUREKA_URL}
       SPRING_DATA_MONGODB_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/${MONGO_DB_NAME}?authSource=admin
       SPRING_ARTEMIS_BROKER_URL: ${ARTEMIS_BROKER_URL}
       SPRING_ARTEMIS_USER: ${ARTEMIS_USER}
       SPRING_ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: ${BOOTSTRAP_SERVERS}
       SPRING_AUTOCONFIGURE_EXCLUDE: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+    restart: on-failure
     networks:
       - nosql-network
       - kafka-network
       - artemis-network
+      - common-network
 
 volumes:
   mysql_data:
@@ -202,3 +246,4 @@ networks:
   nosql-network:
   kafka-network:
   artemis-network:
+  common-network:
