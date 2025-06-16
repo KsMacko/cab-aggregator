@@ -105,7 +105,7 @@ services:
   gateway:
     container_name: gateway
     ports:
-      - "8080:8080"
+      - "8070:8070"
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
@@ -133,6 +133,8 @@ services:
       kafka:
         condition: service_started
       artemis:
+        condition: service_healthy
+      eureka-service:
         condition: service_healthy
     env_file:
       - .env
@@ -167,6 +169,8 @@ services:
         condition: service_started
       ride-service:
         condition: service_started
+      eureka-service:
+        condition: service_healthy
     env_file:
       - .env
     environment:
@@ -190,6 +194,8 @@ services:
       mysql:
         condition: service_healthy
       artemis:
+        condition: service_healthy
+      eureka-service:
         condition: service_healthy
     env_file:
       - .env
@@ -219,6 +225,8 @@ services:
         condition: service_healthy
       kafka:
         condition: service_started
+      eureka-service:
+        condition: service_healthy
     env_file:
       - .env
     environment:
