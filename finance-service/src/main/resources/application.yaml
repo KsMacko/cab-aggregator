@@ -24,5 +24,17 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_SERVICE_URL}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+    tags:
+      application:
+        name: ${spring.application.name}
 server:
   port: 8084

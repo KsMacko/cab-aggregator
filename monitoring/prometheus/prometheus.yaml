@@ -1,0 +1,11 @@
+scrape_configs:
+  - job_name: 'cab-aggregator-metrics'
+    scrape_interval: 15s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [
+        'passenger-service:8081',
+        'driver-service:8082',
+        'ride-service:8083',
+        'finance-service:8084'
+      ]
