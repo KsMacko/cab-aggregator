@@ -19,10 +19,10 @@ import static com.internship.passengerservice.utils.exceptions.ExceptionCodes.RA
 public class RateValidationManager {
     private final RateRepo rateRepo;
 
-    public void checkRateAuthor(Long passengerId, Long rideId) {
-        Rate rate = rateRepo.findById(rideId)
+    public void checkRateAuthor(Long driverId, Long rateId) {
+        Rate rate = rateRepo.findById(rateId)
                 .orElseThrow(()-> new ResourceNotFoundException(RATE_NOT_FOUND.getCode()));
-        if(!rate.getAuthorId().equals(passengerId)){
+        if(!rate.getAuthorId().equals(driverId)){
             throw new InvalidInputException(RATE_AUTHOR_NOT_MATCH.getCode());
         }
     }

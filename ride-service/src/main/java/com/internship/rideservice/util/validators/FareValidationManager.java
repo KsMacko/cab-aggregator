@@ -28,7 +28,7 @@ public class FareValidationManager {
     }
 
     public void checkIfNotExistsByType(FareType fareType) {
-        if (!fareRepo.existsById(fareType)) {
+        if (!fareRepo.existsFareByType(fareType)) {
             throw new ResourceNotFoundException(FARE_NOT_FOUND.getCode());
         }
     }

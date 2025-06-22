@@ -9,6 +9,7 @@ import io.cucumber.java.Before
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
+import org.junit.jupiter.api.BeforeEach
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -37,6 +38,10 @@ class WalletSteps {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
+    }
+
+    @BeforeEach
+    fun setUpEach(){
         `when`(walletRepo.save(any())).thenReturn(mock<DriverWallet>())
         doNothing().`when`(walletRepo).deleteByDriverId(anyLong())
     }
