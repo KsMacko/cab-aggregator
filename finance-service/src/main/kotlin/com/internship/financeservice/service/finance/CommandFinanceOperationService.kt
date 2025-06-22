@@ -49,7 +49,7 @@ class CommandFinanceOperationService (
         }
         wallet.balance = wallet.balance.subtract(requestWalletTransferDto.amount)
         walletTransfer.remainingAmount = wallet.balance
-        walletRepo.save(wallet)
+        walletTransfer.wallet = walletRepo.save(wallet)
         return walletTransferRepo.save(walletTransfer)
     }
     private fun createFinancialOperation(amount: BigDecimal): FinancialOperation =
