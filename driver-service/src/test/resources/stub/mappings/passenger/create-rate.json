@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/author/driver"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "passenger/response-rate.json"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "request": {
+    "method": "DELETE",
+    "urlPattern": "/wallet/driver/\\d+"
+  },
+  "response": {
+    "status": 204
+  }
+}
