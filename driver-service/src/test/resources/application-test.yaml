@@ -10,11 +10,13 @@ spring:
     show-sql: false
   liquibase:
     enabled: false
-#  artemis:
-#    broker-url: tcp://localhost:61616
-#    mode: native
-#    user: admin
-#    password: admin
-#    bootstrap-servers: none
-#    listener:
-#      type: single
+  cloud:
+    openfeign:
+      client:
+        config:
+          finance-service:
+            url: http://localhost:8084
+          passenger-service:
+            url: http://localhost:8081
+          ride-service:
+            url: http://localhost:8083

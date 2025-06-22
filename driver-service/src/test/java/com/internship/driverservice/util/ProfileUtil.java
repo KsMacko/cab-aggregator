@@ -60,7 +60,6 @@ public final class ProfileUtil {
 
     public static DriverProfile driverProfile() {
         return DriverProfile.builder()
-                .profileId(DEFAULT_ID)
                 .firstName(DEFAULT_STR)
                 .lastName(DEFAULT_STR)
                 .fareType(FareType.valueOf(DEFAULT_FARE_TYPE))

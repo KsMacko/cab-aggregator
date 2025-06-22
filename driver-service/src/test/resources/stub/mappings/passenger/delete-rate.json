@@ -1,0 +1,9 @@
+{
+  "request": {
+    "method": "DELETE",
+    "urlPattern": "/\\d+/author/driver/\\d+"
+  },
+  "response": {
+    "status": 204
+  }
+}

@@ -1,12 +1,18 @@
 package com.internship.driverservice.util;
 
-import com.internship.driverservice.enums.notification.NotificationActivity;
-
 import java.math.BigDecimal;
 
 import static com.internship.driverservice.enums.FieldFilter.FIRST_NAME;
+import static com.internship.driverservice.enums.OrderDirection.ASC;
 
 public interface UtilConstants {
+    String BASE_URL = "http://localhost";
+    String DRIVER_BASE_URL = "/api/v1/drivers";
+    String CAR_BASE_URL = "/api/v1/drivers/cars";
+    String NOTIFICATION_BASE_URL = "/api/v1/drivers/notifications";
+    String RATE_BASE_URL = "/api/v1/rates";
+
+
     String DEFAULT_STR = "Иван";
     String DEFAULT_FARE_TYPE = "ECONOMY";
     String DEFAULT_PHONE = "375336666666";
@@ -29,11 +35,11 @@ public interface UtilConstants {
 
     String DEFAULT_STR_ID = "ride123";
     BigDecimal DEFAULT_AMOUNT = new BigDecimal("10.55");
-    String DEFAULT_NOTIFICATION_STATUS = "NON_VIEWED";
-    NotificationActivity DEFAULT_ACTIVITY = NotificationActivity.ACTIVE;
+    String DEFAULT_NOTIFICATION_STATUS = "ACCEPTED";
 
     int DEFAULT_PAGE = 0;
     int DEFAULT_PAGE_SIZE = 10;
     String DEFAULT_SORT_FIELD = FIRST_NAME.toString();
+    String DEFAULT_SORT_DIRECTION = ASC.toString();
 
 }

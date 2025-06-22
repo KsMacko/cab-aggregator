@@ -39,7 +39,6 @@ public final class RateUtil {
 
     public static Rate rateEntity() {
         return Rate.builder()
-                .id(DEFAULT_ID)
                 .value(DEFAULT_RATE)
                 .authorId(DEFAULT_ID)
                 .rideId(DEFAULT_STR_ID)
