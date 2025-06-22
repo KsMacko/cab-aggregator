@@ -15,9 +15,12 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -45,6 +48,9 @@ public class RateSteps {
     @Mock
     private RateValidationManager rateValidationManager;
 
+    @Mock
+    DriverProfile driverProfile;
+
     @InjectMocks
     private RateService rateService;
 
@@ -52,13 +58,16 @@ public class RateSteps {
     private Long currentPassengerId;
     private Long currentDriverId;
     private RequestRateDto currentRateDto;
+    @Mock
     private Rate currentRate;
 
     @Before
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        this.currentRate = mock(Rate.class);
-        DriverProfile driverProfile = mock(DriverProfile.class);
+    }
+
+    @BeforeEach
+    public void setUpEach() {
         when(currentRate.getDriver()).thenReturn(driverProfile);
     }
 

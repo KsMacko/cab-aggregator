@@ -21,6 +21,7 @@ import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import org.junit.Assert.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.InjectMocks
@@ -78,6 +79,10 @@ class FinanceOperationSteps {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
+    }
+
+    @BeforeEach
+    fun setUpEach(){
         wallet.balance= walletBalance
 
         `when`(financialOperationRepo.save(any<FinancialOperation>())).thenReturn(mock<FinancialOperation>())
