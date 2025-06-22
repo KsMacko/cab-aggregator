@@ -37,13 +37,31 @@ management:
   endpoints:
     web:
       exposure:
-        include:  "*"
+        include: prometheus, health, info
   metrics:
     distribution:
       percentiles-histogram:
         "[http.server.requests]": true
     tags:
-      application:
-        name: ${spring.application.name}
+      service: ride-service
+  elastic:
+    metrics:
+      export:
+        enabled: true
+        host: ${ES_URL}
+        index: ride-metrics
+        auto-create-index: false
+        timestamp-field-name: "@timestamp"
+        step: 1m
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${MANAGEMENT_ZIPKIN_TRACING_ENDPOINT}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 server:
   port: 8083

@@ -32,10 +32,19 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_SERVICE_URL}
-#  instance:
-#    prefer-ip-address: true
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+    tags:
+      application=${spring.application.name}:
 server:
   port: 8070

@@ -139,7 +139,9 @@ services:
     env_file:
       - .env
     environment:
+      MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: ${ZIPKIN}
       EUREKA_SERVICE_URL: ${EUREKA_URL}
+      ES_URL: ${ELASTICSEARCH_URL}
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${DRIVER_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQL_ROOT_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -174,7 +176,9 @@ services:
     env_file:
       - .env
     environment:
+      MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: ${ZIPKIN}
       EUREKA_SERVICE_URL: ${EUREKA_URL}
+      ES_URL: ${ELASTICSEARCH_URL}
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${PASSENGER_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQL_ROOT_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -200,7 +204,9 @@ services:
     env_file:
       - .env
     environment:
+      MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: ${ZIPKIN}
       EUREKA_SERVICE_URL: ${EUREKA_URL}
+      ES_URL: ${ELASTICSEARCH_URL}
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${FINANCE_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_ARTEMIS_BROKER_URL: ${ARTEMIS_BROKER_URL}
       SPRING_ARTEMIS_USER: ${ARTEMIS_USER}
@@ -230,7 +236,9 @@ services:
     env_file:
       - .env
     environment:
+      MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: ${ZIPKIN}
       EUREKA_SERVICE_URL: ${EUREKA_URL}
+      ES_URL: ${ELASTICSEARCH_URL}
       SPRING_DATA_MONGODB_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/${MONGO_DB_NAME}?authSource=admin
       SPRING_ARTEMIS_BROKER_URL: ${ARTEMIS_BROKER_URL}
       SPRING_ARTEMIS_USER: ${ARTEMIS_USER}
@@ -245,35 +253,95 @@ services:
       - common-network
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.44.0
     container_name: prometheus
     volumes:
-      - ./monitoring/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     networks:
       - common-network
 
+  kafka-exporter:
+    image: danielqsj/kafka-exporter:latest
+    container_name: kafka_exporter
+    ports:
+      - "9308:9308"
+    depends_on:
+      kafka:
+        condition: service_started
+    environment:
+      - KAFKA_BROKERS=kafka-service:9092
+    restart: unless-stopped
+    networks:
+      - kafka-network
+      - common-network
+
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:9.5.2
     depends_on:
       prometheus:
+        condition: service_started
+      elasticsearch:
         condition: service_started
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     volumes:
-        - grafana_data:/var/lib/grafana
-#    networks:
-#      - common-network
+      - ./monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - common-network
+
+  elasticsearch:
+    image: elasticsearch:8.12.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - common-network
+
+  logstash:
+    image: logstash:8.12.0
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./monitoring/logstash/pipeline:/usr/share/logstash/pipeline
+    depends_on:
+      - elasticsearch
+    networks:
+      - common-network
+
+  kibana:
+    image: kibana:8.9.0
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+    networks:
+      - common-network
+
+  zipkin:
+    image: openzipkin/zipkin:2.27
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - common-network
 
 volumes:
   mysql_data:
   kafka_data:
   mongo_data:
-  grafana_data:
+  es_data:
 
 networks:
   sql-network:
