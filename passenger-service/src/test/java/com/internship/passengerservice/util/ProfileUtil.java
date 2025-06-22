@@ -16,7 +16,6 @@ public class ProfileUtil implements UtilConstants{
 
     public static PassengerProfile validPassengerProfile() {
         return PassengerProfile.builder()
-                .profileId(VALID_ID)
                 .firstName(VALID_FIRST_NAME)
                 .email(VALID_EMAIL)
                 .phone(VALID_PHONE)

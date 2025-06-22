@@ -6,7 +6,8 @@ import java.util.List;
 public interface UtilConstants {
     String VALID_ID = "ident";
     Long VALID_PERSON_ID = 0L;
-    String VALID_FARE_TYPE = "ECONOMY";
+    String VALID_FARE_TYPE = "COMFORT";
+    String INVALID_FARE_TYPE = "INVALID";
     BigDecimal VALID_PRICE = new BigDecimal("5.00");
     Integer VALID_INTEGER = 10;
     Byte VALID_DISCOUNT = Byte.valueOf("10");

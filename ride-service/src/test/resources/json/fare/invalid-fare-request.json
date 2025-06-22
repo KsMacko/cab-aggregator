@@ -1,0 +1,8 @@
+{
+  "type": "WRONG_TYPE",
+  "minPrice": 0.00,
+  "freeWaiting": -1,
+  "paidWaitingPrice": 0.00,
+  "pricePerKm": -1.00,
+  "pricePerMin": -0.10
+}

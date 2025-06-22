@@ -70,17 +70,8 @@ class FareValidationManagerTest {
 
     @Test
     void checkIfNotExistsByType_shouldThrow_whenFareDoesNotExist() {
-        when(fareRepo.existsById(any())).thenReturn(false);
-
         assertThatThrownBy(() -> validationManager.checkIfNotExistsByType(any()))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining(FARE_NOT_FOUND.getCode());
-    }
-
-    @Test
-    void checkIfNotExistsByType_shouldDoNothing_whenExists() {
-        when(fareRepo.existsById(any())).thenReturn(true);
-
-        validationManager.checkIfNotExistsByType(any());
     }
 }

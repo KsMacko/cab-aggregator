@@ -1,0 +1,9 @@
+{
+  "passengerId": -1,
+  "promoCode": "SUMMER@25",
+  "startLocation": "",
+  "endLocation": [],
+  "distance": -1.0,
+  "fareType": "WRONG_FARE",
+  "paymentType": "WRONG_PAYMENT"
+}

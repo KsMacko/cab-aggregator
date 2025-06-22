@@ -19,7 +19,6 @@ public class RateUtil implements UtilConstants{
 
     public static Rate validRateEntity() {
         return Rate.builder()
-                .id(VALID_ID)
                 .value(VALID_RATE)
                 .authorId(VALID_ID)
                 .rideId(VALID_RIDE_ID)
