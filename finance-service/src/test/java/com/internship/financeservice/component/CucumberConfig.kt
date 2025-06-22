@@ -1,0 +1,6 @@
+package com.internship.financeservice.component
+
+import io.cucumber.spring.CucumberContextConfiguration
+
+@CucumberContextConfiguration
+class CucumberConfig
