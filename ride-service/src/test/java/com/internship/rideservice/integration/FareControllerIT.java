@@ -3,16 +3,13 @@ package com.internship.rideservice.integration;
 import com.internship.rideservice.entity.Fare;
 import com.internship.rideservice.repo.FareRepo;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import static com.internship.rideservice.config.JsonFiles.BASE_FARES;
-import static com.internship.rideservice.config.JsonFiles.BASE_URL;
 import static com.internship.rideservice.config.JsonFiles.invalidFareRequest;
 import static com.internship.rideservice.config.JsonFiles.validFareRequest;
 import static com.internship.rideservice.utils.FareUtil.fareEntity;
@@ -20,7 +17,6 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,7 +41,6 @@ public class FareControllerIT extends BaseTest {
     }
 
     @Test
-    @Order(2)
     @DisplayName("Try to create fare with invalid data - should return validation errors")
     void createFare_withInvalidData_shouldReturnValidationError() throws Exception {
         mockMvc.perform(post(BASE_FARES)
@@ -56,7 +51,6 @@ public class FareControllerIT extends BaseTest {
     }
 
     @Test
-    @Order(3)
     @DisplayName("Get fare by type after creation - should return 200")
     void getFareByType_shouldReturnOk() throws Exception {
         Fare fare = createFare();
@@ -66,7 +60,6 @@ public class FareControllerIT extends BaseTest {
     }
 
     @Test
-    @Order(5)
     @DisplayName("Get all fares - should return list of fares")
     void getAllFares_shouldReturnList() throws Exception {
         mockMvc.perform(get(BASE_FARES))
@@ -76,7 +69,6 @@ public class FareControllerIT extends BaseTest {
     }
 
     @Test
-    @Order(6)
     @DisplayName("Delete fare by type - should return 204")
     void deleteFare_byType_shouldReturnNoContent() throws Exception {
        Fare fare = createFare();
