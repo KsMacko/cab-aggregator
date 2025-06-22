@@ -1,0 +1,31 @@
+spring:
+  config:
+    import: optional:file:../.env[.properties]
+  messages:
+    basename: messages
+    encoding: UTF-8
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test
+  liquibase:
+    enabled: false
+  cloud:
+    openfeign:
+      client:
+        config:
+          finance-service:
+            url: http://localhost:7777
+          passenger-service:
+            url: http://localhost:8888
+  kafka:
+    admin:
+      auto-create: false
+    bootstrap-servers: localhost:9092
+    consumer:
+      properties:
+        spring.json.trusted.packages: com.internship.commonevents.event
+      group-id: ride-status
+      auto-offset-reset: earliest
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
