@@ -15,5 +15,4 @@ public interface JsonFiles {
     String validPassengerFilterRequest = JsonFileReader.readJsonFile(VALID_PASSENGER_FILTER_REQUEST);
 
     String validRateRequest = JsonFileReader.readJsonFile(VALID_RATE_REQUEST);
-
 }
