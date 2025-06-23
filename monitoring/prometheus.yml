@@ -1,0 +1,17 @@
+scrape_configs:
+  - job_name: 'cab-aggregator-metrics'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 15s
+    static_configs:
+      - targets: [
+        'finance-service:8084',
+        'ride-service:8083',
+        'driver-service:8082',
+        'passenger-service:8081'
+      ]
+        labels:
+          application: 'cab-aggregator-app'
+          namespace: 'default'
+  - job_name: 'kafka-metrics'
+    static_configs:
+      - targets: [ 'kafka-exporter:9308' ]

@@ -24,5 +24,35 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_SERVICE_URL}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus, health, info
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+    tags:
+      service: finance-service
+  elastic:
+    metrics:
+      export:
+        enabled: true
+        host: ${ES_URL}
+        index: finance-metrics
+        auto-create-index: false
+        timestamp-field-name: "@timestamp"
+        step: 1m
+  tracing:
+    sampling:
+      probability: 1.0
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  zipkin:
+    tracing:
+      endpoint: ${MANAGEMENT_ZIPKIN_TRACING_ENDPOINT}
 server:
   port: 8084
