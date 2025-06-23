@@ -1,6 +1,5 @@
 package com.internship.rideservice.config;
 
-
 import liquibase.Liquibase;
 import liquibase.database.DatabaseFactory;
 import liquibase.ext.mongodb.database.MongoLiquibaseDatabase;
@@ -8,7 +7,6 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 
 @Configuration
 public class LiquibaseConfig {

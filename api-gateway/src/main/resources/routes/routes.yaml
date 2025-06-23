@@ -1,0 +1,47 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: driver-service
+          uri: lb://driver-service
+          predicates:
+            - Path=/api/v1/drivers/**
+            - Path=/api/v1/rates/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: driverServiceCircuitBreaker
+                fallbackUri: forward:/fallback/driver-service
+
+        - id: finance-service
+          uri: lb://finance-service
+          predicates:
+            - Path=/api/v1/finance/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: financeServiceCircuitBreaker
+                fallbackUri: forward:/fallback/finance-service
+
+        - id: passenger-service
+          uri: lb://passenger-service
+          predicates:
+            - Path=/api/v1/passengers/**
+            - Path=/api/v1/rates/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: passengerServiceCircuitBreaker
+                fallbackUri: forward:/fallback/passenger-service
+
+        - id: ride-service
+          uri: lb://ride-service
+          predicates:
+            - Path=/api/v1/fares/**
+            - Path=/api/v1/promo-codes/**
+            - Path=/api/v1/rides/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: rideServiceCircuitBreaker
+                fallbackUri: forward:/fallback/ride-service

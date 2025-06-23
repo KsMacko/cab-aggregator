@@ -1,11 +1,11 @@
 spring:
   application:
-    name: finance_service
+    name: finance-service
   datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/finance_db?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: asdfhcjsjffh
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
@@ -14,11 +14,15 @@ spring:
   liquibase:
     enabled: true
   artemis:
-    broker-url: tcp://localhost:61616
-    user: admin
-    password: admin
+    broker-url: ${SPRING_ARTEMIS_BROKER_URL}
+    user: ${SPRING_ARTEMIS_USER}
+    password: ${SPRING_ARTEMIS_PASSWORD}
   messages:
     basename: messages
     encoding: UTF-8
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVICE_URL}
 server:
   port: 8084

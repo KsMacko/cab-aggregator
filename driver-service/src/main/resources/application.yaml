@@ -3,9 +3,9 @@ spring:
     name: driver-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/driver_db?useSSL=false&serverTimezone=UTC
-    username: root
-    password: asdfhcjsjffh
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
@@ -15,14 +15,14 @@ spring:
     basename: messages
     encoding: UTF-8
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
     consumer:
-      group-id: ride-status
+      group-id: driver-event
   artemis:
     mode: native
-    user: admin
-    password: admin
-    broker-url: tcp://localhost:61616
+    user: ${SPRING_ARTEMIS_USER}
+    password: ${SPRING_ARTEMIS_PASSWORD}
+    broker-url: ${SPRING_ARTEMIS_BROKER_URL}
   cloud:
     openfeign:
       client:
@@ -33,5 +33,9 @@ spring:
             url: http://localhost:8081/api/v1/rates
           ride-service:
             url: http://localhost:8083/api/v1/rides
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVICE_URL}
 server:
   port: 8082
