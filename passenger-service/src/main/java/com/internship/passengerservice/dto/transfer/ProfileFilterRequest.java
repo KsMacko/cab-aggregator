@@ -36,7 +36,7 @@ public class ProfileFilterRequest{
     @Min(value = MIN_RATE, message = "rate.minValue")
     @Max(value = MAX_RATE, message = "rate.maxValue")
     private Byte rate;
-    @Positive(message = "page.positive")
+    @PositiveOrZero(message = "page.positive")
     @Max(value = MAX_PAGE_VALUE, message = "page.max")
     private Integer page = DEFAULT_PAGE_VALUE;
     @PositiveOrZero(message = "size.positive")

@@ -27,6 +27,10 @@
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<springdoc.version>2.8.3</springdoc.version>
 		<project-lombok.version>1.18.36</project-lombok.version>
+		<wiremock-jetty12.version>3.13.0</wiremock-jetty12.version>
+		<cucumber-java.version>7.14.0</cucumber-java.version>
+		<cucumber-junit-platform-engine.version>7.14.0</cucumber-junit-platform-engine.version>
+		<cucumber-spring.version>7.14.0</cucumber-spring.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -116,27 +120,25 @@
 		<dependency>
 			<groupId>org.wiremock</groupId>
 			<artifactId>wiremock-jetty12</artifactId>
-			<version>3.13.0</version>
+			<version>${wiremock-jetty12.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java</artifactId>
-			<version>7.14.0</version>
+			<version>${cucumber-java.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-junit-platform-engine</artifactId>
-			<version>7.14.0</version>
+			<version>${cucumber-junit-platform-engine.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-spring</artifactId>
-			<version>7.14.0</version>
+			<version>${cucumber-spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

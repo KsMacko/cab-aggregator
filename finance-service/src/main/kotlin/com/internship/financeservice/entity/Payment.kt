@@ -2,6 +2,8 @@ package com.internship.financeservice.entity
 
 import com.internship.financeservice.enums.PaymentType
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.MapsId
@@ -20,6 +22,7 @@ class Payment (){
     @Id
     val id: Long? = null
     var passengerId: Long = 0
+    @Enumerated(EnumType.STRING)
     lateinit var paymentType: PaymentType
 
     @OneToOne(fetch = FetchType.EAGER)

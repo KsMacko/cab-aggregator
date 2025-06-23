@@ -1,0 +1,29 @@
+package com.internship.financeservice.unit.mappers
+
+import com.internship.financeservice.dto.mapper.PaymentMapper
+import com.internship.financeservice.enums.PaymentType
+import com.internship.financeservice.utils.PaymentUtil
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mapstruct.factory.Mappers
+import org.mockito.junit.jupiter.MockitoExtension
+import java.time.temporal.ChronoUnit
+
+@ExtendWith(MockitoExtension::class)
+class PaymentMapperTest {
+
+    private var paymentMapper: PaymentMapper = Mappers.getMapper(PaymentMapper::class.java)
+
+    @Test
+    fun toDto_shouldMapCreatedAtAndAmountFromFinancialOperation() {
+        val payment = PaymentUtil.validPayment(PaymentType.CARD)
+
+        val result = paymentMapper.toDto(payment)
+
+        assertThat(result.passengerId).isEqualTo(payment.passengerId)
+        assertThat(result.createdAt.truncatedTo(ChronoUnit.SECONDS)).isEqualTo(payment.financialOperation.createdAt.truncatedTo(java.time.temporal.ChronoUnit.SECONDS))
+        assertThat(result.amount).isEqualTo(payment.financialOperation.amount)
+        assertThat(result.paymentType).isEqualTo(payment.paymentType)
+    }
+}

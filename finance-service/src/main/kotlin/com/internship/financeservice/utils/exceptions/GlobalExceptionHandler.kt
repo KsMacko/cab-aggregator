@@ -25,7 +25,7 @@ class GlobalExceptionHandler(
             .stream()
             .map { fieldError: FieldError ->
                 val arguments = fieldError.arguments
-                messageSource!!.getMessage(
+                messageSource.getMessage(
                     fieldError.defaultMessage!!,
                     arguments,
                     LocaleContextHolder.getLocale()
@@ -34,7 +34,7 @@ class GlobalExceptionHandler(
             .toList()
         return ResponseEntity<BaseValidationException>(
             BaseValidationException(
-                messageSource!!.getMessage(ExceptionCodes.ERROR_INVALID_INPUT.getCode(),
+                messageSource.getMessage(ExceptionCodes.ERROR_INVALID_INPUT.getCode(),
                     null,
                     LocaleContextHolder.getLocale()
                 ), errors
@@ -46,7 +46,7 @@ class GlobalExceptionHandler(
     fun handleResourceNotFoundException(ex: ResourceNotFoundException): ResponseEntity<BaseException> {
         return ResponseEntity<BaseException>(
             BaseException(
-                messageSource!!.getMessage(
+                messageSource.getMessage(
                     ex.message,
                     null,
                     LocaleContextHolder.getLocale()
@@ -59,7 +59,7 @@ class GlobalExceptionHandler(
     fun handleInvalidInputExceptions(ex: Exception): ResponseEntity<BaseException> {
         return ResponseEntity<BaseException>(
             BaseException(
-                messageSource!!.getMessage(
+                messageSource.getMessage(
                     ex.message!!,
                     null,
                     LocaleContextHolder.getLocale()
@@ -72,7 +72,7 @@ class GlobalExceptionHandler(
     fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException?): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(
-                messageSource!!.getMessage(
+                messageSource.getMessage(
                     ExceptionCodes.ERROR_NOT_READABLE.getCode(),
                     null,
                     LocaleContextHolder.getLocale()
