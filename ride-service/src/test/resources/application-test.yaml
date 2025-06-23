@@ -14,9 +14,9 @@ spring:
       client:
         config:
           finance-service:
-            url: http://localhost:7777
+            url: http://localhost:8084
           passenger-service:
-            url: http://localhost:8888
+            url: http://localhost:8081
   kafka:
     admin:
       auto-create: false
