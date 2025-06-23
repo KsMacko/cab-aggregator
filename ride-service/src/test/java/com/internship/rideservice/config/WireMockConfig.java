@@ -11,14 +11,14 @@ public class WireMockConfig {
     @Bean(initMethod = "start", destroyMethod = "stop")
     public WireMockServer passengerWireMockServer() {
         return new WireMockServer(WireMockConfiguration.options()
-                .port(8081)
+                .port(8888)
                 .usingFilesUnderClasspath("stub"));
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     public WireMockServer financeWireMockServer() {
         return new WireMockServer(WireMockConfiguration.options()
-                .port(8084)
+                .port(7777)
                 .usingFilesUnderClasspath("stub"));
     }
 }
